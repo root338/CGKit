@@ -58,7 +58,7 @@
     _cropView.delegate = self;
     [_cropView.pinchGestureRecognizer addTarget:self.imageView action:@selector(zoomImageView:)];
     _cropView.isFixedProportion = YES;
-    _cropView.fixedProportionFloat = 3/4.;
+    _cropView.fixedProportionFloat = 4/3.;
     
     [self addSubview:_cropView];
     return _cropView;
@@ -68,6 +68,7 @@
 {
     _image = image;
     self.imageView.image = image;
+    self.imageView.isZoomLessThanMinScale = NO;
     
     [self cropView];
 }
@@ -82,16 +83,16 @@
 }
 
 #pragma mark - CGZoomImageViewDelegate
-//- (void)zoomImageView:(CGZoomImageView *)zoomImageView imageRect:(CGRect)imageRect
-//{
-//    
-//}
+- (void)zoomImageView:(CGZoomImageView *)zoomImageView imageRect:(CGRect)imageRect
+{
+    
+}
 
 #pragma mark - CGCropViewDelegate
-- (void)cropView:(CGCropView *)cropView pinchGestureRecognizer:(UIPinchGestureRecognizer *)pinch
-{
-    [self.imageView zoomImageView:pinch];
-}
+//- (void)cropView:(CGCropView *)cropView pinchGestureRecognizer:(UIPinchGestureRecognizer *)pinch
+//{
+//    [self.imageView zoomImageView:pinch];
+//}
 
 - (CGRect)setupAvailableAreaCropView:(CGCropView *)cropView
 {

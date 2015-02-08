@@ -21,7 +21,7 @@
 - (void)zoomImageView:(CGZoomImageView *)zoomImageView imageRect:(CGRect)imageRect;
 
 /**
- *  由于控制当前缩放因数下是否可以继续缩放
+ *  用于控制当前缩放因数下是否可以继续缩放
  *
  *  @param zoomImageView 图片的视图对象
  *  @param scale         当前缩放因数的数值
@@ -54,6 +54,13 @@
 @property (assign, nonatomic) CGFloat maxZoomScale;
 
 /**
+ *  是否可以缩放的比最小的缩放值还小
+ *  
+ *  默认为YES
+ */
+@property (assign, nonatomic) BOOL isZoomLessThanMinScale;
+
+/**
  最小的缩小比例
  默认为 1
  */
@@ -81,10 +88,14 @@
  */
 @property (assign, nonatomic, readonly) CGRect imageCurrentRect;
 
+/**
+ 滑动视图
+ */
 @property (strong, nonatomic, readonly) UIScrollView *scrollView;
 
 /**
  缩放手势的触发器
  */
 - (void)zoomImageView:(UIPinchGestureRecognizer *)pinch;
+
 @end

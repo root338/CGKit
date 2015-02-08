@@ -42,10 +42,7 @@
     if (self) {
         self.backgroundColor = [UIColor blackColor];
         
-        _isZoomImage = YES;
-        _maxZoomScale = FLT_MAX;
-        _minZoomScale = 1;
-        _currentZoomScale = 1;
+        [self initializeVariables];
     }
     
     return self;
@@ -54,6 +51,10 @@
 - (void)initializeVariables
 {
     _isZoomImage = YES;
+    _maxZoomScale = FLT_MAX;
+    _minZoomScale = 1;
+    _currentZoomScale = 1;
+    _isZoomLessThanMinScale = YES;
 }
 
 - (UIScrollView *)scrollView
@@ -131,7 +132,7 @@
             isZoomCurrentScale = [self.delegate zoomImageView:self isScale:scale];
         }
         
-        if (scale <= self.maxZoomScale && isZoomCurrentScale) {
+        if (isZoomCurrentScale && (scale <= self.maxZoomScale && !(!self.isZoomLessThanMinScale && scale <= self.minZoomScale))) {
             
             ///缩放图片
             self.imageView.transform = CGAffineTransformMakeScale(scale, scale);
@@ -151,6 +152,29 @@
             ///获取图片的原来的中心点
             CGPoint oldCenter = self.imageView.center;
             
+//            ///设置图片新的中心点
+//            self.imageView.center = newCenter;
+            
+            ///获取原来的滑动视图的偏移量
+            CGPoint offset = self.scrollView.contentOffset;
+            
+            ///计算图片新的和旧的中心点之间的偏移量， 加上原来的滚动视图偏移量得到新值
+            offset = CGPointMake(offset.x + (newCenter.x - oldCenter.x), offset.y + ( newCenter.y - oldCenter.y));
+            
+            //当图片在边界区域缩放时，为了不影响图片缩放时的抖动，单向移动图片的中心坐标，而不是等比的移动图片坐标
+            if (offset.x <= 0 || offset.x >= newContentSize.width - self.bounds.size.width) {
+                newCenter.x += (newCenter.x - oldCenter.x);
+            }
+//            else if ( offset.x >= newContentSize.width - self.bounds.size.width) {
+//                newCenter.x -= (newCenter.x - oldCenter.x);
+//            }
+            if (offset.y <= 0 || offset.y >= newContentSize.height - self.bounds.size.width) {
+                newCenter.y += (newCenter.y - oldCenter.y);
+            }
+//            else if (offset.y >= newContentSize.height - self.bounds.size.width) {
+//                newCenter.y -= (newCenter.y - oldCenter.y);
+//            }
+//            
             ///设置图片新的中心点
             self.imageView.center = newCenter;
             
@@ -159,12 +183,6 @@
             if ([self.delegate respondsToSelector:@selector(zoomImageView:imageRect:)]) {
                 [self.delegate zoomImageView:self imageRect:self.imageCurrentRect];
             }
-            
-            ///获取原来的滑动视图的偏移量
-            CGPoint offset = self.scrollView.contentOffset;
-            
-            ///计算图片新的和旧的中心点之间的偏移量， 加上原来的滚动视图偏移量得到新值
-            offset = CGPointMake(offset.x + (newCenter.x - oldCenter.x), offset.y + ( newCenter.y - oldCenter.y));
             
             ///设置滚动视图的偏移量
             self.scrollView.contentOffset = offset;

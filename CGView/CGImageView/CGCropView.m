@@ -7,6 +7,7 @@
 //
 
 #import "CGCropView.h"
+#import "NSObject+AreaCalculate.h"
 
 typedef void(^setupAreaValue)(CGFloat value);
 @interface CGCropView ()
@@ -14,6 +15,11 @@ typedef void(^setupAreaValue)(CGFloat value);
     CGPoint _startPoint;
     CGFloat _transformDistance;
 }
+
+/**
+ *  当前点击的类型
+ */
+@property (assign, nonatomic, readwrite) CropClickType currentCropClickType;
 
 //@property (strong, nonatomic) UIPinchGestureRecognizer *pinchGestureRecognizer;
 @end
@@ -68,6 +74,13 @@ typedef void(^setupAreaValue)(CGFloat value);
     return self.currentShowAreaCropView.size;
 }
 
+- (void)setFixedProportionFloat:(CGFloat)fixedProportionFloat
+{
+    _fixedProportionFloat = fixedProportionFloat;
+    
+    self.currentShowAreaCropView = [self availableRect_maxRect:[self getMaxAvailableRect] scale:fixedProportionFloat];
+}
+
 - (void)setCurrentShowAreaCropView:(CGRect)currentShowAreaCropView
 {
     if (!CGRectEqualToRect(currentShowAreaCropView, _currentShowAreaCropView)) {
@@ -78,22 +91,49 @@ typedef void(^setupAreaValue)(CGFloat value);
     }
 }
 
+- (void)reloadUpdateCropRect
+{
+    CGRect maxAvailableRect = [self getMaxAvailableRect];
+    
+}
+
+///获取截取框的最大区域
+- (CGRect)getMaxAvailableRect
+{
+    CGRect maxAvailableRect = CGRectZero;
+    if ([self.delegate respondsToSelector:@selector(setupAvailableAreaCropView:)]) {
+        maxAvailableRect = [self.delegate setupAvailableAreaCropView:self];
+    }
+    if (CGRectEqualToRect(maxAvailableRect, CGRectZero)) {
+        maxAvailableRect = self.bounds;
+    }else {
+        maxAvailableRect = CGRectIntersection(maxAvailableRect, self.bounds);
+    }
+    
+    return maxAvailableRect;
+}
+
 ///判断截取框的显示区域是否符合规定
 - (BOOL)cropAreaRestrictionsFunction:(CGRect)cropNewRect
 {
     BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(setupAvailableAreaCropView:)]) {
-        CGRect availableArea = [self.delegate setupAvailableAreaCropView:self];
-        if (!CGRectContainsRect(availableArea, cropNewRect)) {
-            
-            result = NO;
-        }
-        
-    }
-    if (result) {
-        if (!CGRectContainsRect(self.bounds, cropNewRect)) {
-            result = NO;
-        }
+    ///限制的最大得区域
+    CGRect maxAvailableRect = [self getMaxAvailableRect];
+//    if ([self.delegate respondsToSelector:@selector(setupAvailableAreaCropView:)]) {
+//        CGRect availableArea = [self.delegate setupAvailableAreaCropView:self];
+//        if (!CGRectContainsRect(availableArea, cropNewRect)) {
+//            
+//            result = NO;
+//        }
+//        
+//    }
+//    if (result) {
+//        if (!CGRectContainsRect(self.bounds, cropNewRect)) {
+//            result = NO;
+//        }
+//    }
+    if (!CGRectContainsRect(maxAvailableRect, cropNewRect)) {
+        return NO;
     }
     return result;
 }
@@ -132,7 +172,7 @@ typedef void(^setupAreaValue)(CGFloat value);
             CGFloat oldHeight = tmpCopyCurrentShowArea.size.height;
             CGFloat newHeight = oldHeight + (top ? -1 : 1) * offsetDistance.y;
             CGFloat oldWidth = tmpCopyCurrentShowArea.size.width;
-            CGFloat newWidth = newHeight / self.fixedProportionFloat;
+            CGFloat newWidth = newHeight * self.fixedProportionFloat;
             tmpCopyCurrentShowArea.size = CGSizeMake(newWidth, newHeight);
             
             tmpCopyCurrentShowArea.origin.x -= (newWidth - oldWidth) / 2;
@@ -147,7 +187,7 @@ typedef void(^setupAreaValue)(CGFloat value);
             CGFloat oldWidth = tmpCopyCurrentShowArea.size.width;
             CGFloat newWidth = oldWidth - (left ? 1 : -1) * offsetDistance.x;
             CGFloat oldHeight = tmpCopyCurrentShowArea.size.height;
-            CGFloat newHeight = newWidth * self.fixedProportionFloat;
+            CGFloat newHeight = newWidth / self.fixedProportionFloat;
             tmpCopyCurrentShowArea.size = CGSizeMake(newWidth, newHeight);
             
             tmpCopyCurrentShowArea.origin.y -= (newHeight - oldHeight) / 2;

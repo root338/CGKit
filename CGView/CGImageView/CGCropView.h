@@ -134,7 +134,7 @@ typedef NS_ENUM(NSInteger, CropClickType){
 /**
  *  当前点击的类型
  */
-@property (assign, nonatomic) CropClickType currentCropClickType;
+@property (assign, nonatomic, readonly) CropClickType currentCropClickType;
 
 /**
  *  截取框的最小显示大小
@@ -172,4 +172,9 @@ typedef NS_ENUM(NSInteger, CropClickType){
  *  设置当前点击的类型
  */
 - (void)setupClickType_CurrentCropClickPoint:(CGPoint)point event:(UIEvent *)event;
+
+/**
+ *  更新截取框的显示区域
+ */
+- (void)reloadUpdateCropRect;
 @end
