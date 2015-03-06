@@ -13,7 +13,7 @@
 
 @optional
 /**
- *  当图片的现实区域变化时进行回调
+ *  当图片的显示区域变化时进行回调
  *
  *  @param zoomImageView 图片的视图对象
  *  @param imageRect     改变后的显示区域

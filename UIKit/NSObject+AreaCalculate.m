@@ -99,4 +99,19 @@ CGPoint _CGRectCenter(CGRect rect)
 {
     return CGPointMake(rect.origin.x + rect.size.width / 2, rect.origin.y + rect.size.height / 2);
 }
+
+CGPoint _CGPointSubtractPoint(CGPoint point1, CGPoint point2)
+{
+    return CGPointMake(point1.x - point2.x, point1.y - point2.y);
+}
+
+CGPoint _CGPointForMiddle(CGPoint point)
+{
+    return _CGPointMiddlePoint(point, CGPointZero);
+}
+
+CGPoint _CGPointMiddlePoint(CGPoint point1, CGPoint point2)
+{
+    return CGPointMake(point1.x + point2.x, point1.y + point2.y);
+}
 @end
