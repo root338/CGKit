@@ -44,9 +44,40 @@
         return currentRect;
     }
     
-    CGRect maxAvailableRect = [self availableRect_maxRect:maxRect scale:scale];
+    CGRect maxAvailableRect = CGRectZero; //[self availableRect_maxRect:maxRect scale:scale];
     
+    CGRect tmpCurrentRect = currentRect;
+    tmpCurrentRect.origin = maxRect.origin;
+    if (CGRectContainsRect(maxRect, tmpCurrentRect)) {
+        maxAvailableRect = tmpCurrentRect;
+    }else {
+        
+        maxAvailableRect = [self availableRect_maxRect:CGRectIntersection(tmpCurrentRect, maxRect) scale:tmpCurrentRect.size.width / tmpCurrentRect.size.height];
+    }
     
+    //是否比最大区域X坐标小
+    if (currentRect.origin.x < maxRect.origin.x) {
+        maxAvailableRect.origin.x = maxRect.origin.x;
+    }else {
+        //是否比最大区域的左边线还宽
+        CGFloat hSpace = currentRect.origin.x + maxAvailableRect.size.width - (maxRect.origin.x + maxRect.size.width);
+        if (hSpace > 0) {
+            maxAvailableRect.origin.x = maxRect.origin.x + (maxRect.size.width - maxAvailableRect.size.width);
+        }
+    }
+    
+    //是否比最大区域Y坐标小
+    if (currentRect.origin.y < maxRect.origin.y) {
+        //设置可用区域为最大区域坐标
+        maxAvailableRect.origin = maxRect.origin;
+    }else {
+        //是否比最大区域的底线还高
+        CGFloat vSpace = currentRect.origin.y + maxAvailableRect.size.height - (maxRect.origin.y + maxRect.size.height);
+        
+        if (vSpace > 0) {
+            maxAvailableRect.origin.y = maxRect.origin.y + (maxRect.size.height - maxAvailableRect.size.height);
+        }
+    }
     
     return maxAvailableRect;
 }
@@ -67,5 +98,20 @@ BOOL _CGSizeGreaterThan(CGSize size1, CGSize size2)
 CGPoint _CGRectCenter(CGRect rect)
 {
     return CGPointMake(rect.origin.x + rect.size.width / 2, rect.origin.y + rect.size.height / 2);
+}
+
+CGPoint _CGPointSubtractPoint(CGPoint point1, CGPoint point2)
+{
+    return CGPointMake(point1.x - point2.x, point1.y - point2.y);
+}
+
+CGPoint _CGPointForMiddle(CGPoint point)
+{
+    return _CGPointMiddlePoint(point, CGPointZero);
+}
+
+CGPoint _CGPointMiddlePoint(CGPoint point1, CGPoint point2)
+{
+    return CGPointMake(point1.x + point2.x, point1.y + point2.y);
 }
 @end

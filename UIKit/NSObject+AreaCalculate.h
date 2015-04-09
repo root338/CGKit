@@ -40,7 +40,7 @@
 /**
  *  自动设置符合条件的区域
  *
- *  @warning:设置的并非最大区域，将设置不超过currentRect区域并符合maxRect区域的区域
+ *  @warning 设置的并非最大区域，将设置不超过currentRect区域并符合maxRect区域的区域
  *
  *  @param maxRect 指定的区域
  *  @param scale   宽：高的比例因数
@@ -84,4 +84,33 @@ BOOL _CGSizeGreaterThan(CGSize size1, CGSize size2);
  *  @return 返回指定区域的中心点
  */
 CGPoint _CGRectCenter(CGRect rect);
+
+/**
+ *  由point1 减去point2 的坐标得到的新的坐标
+ *
+ *  @param point1 终坐标
+ *  @param point2 起坐标
+ *
+ *  @return 返回point1减去point2的坐标得到的值
+ */
+CGPoint _CGPointSubtractPoint(CGPoint point1, CGPoint point2);
+
+/**
+ *  计算坐标的中间坐标
+ *
+ *  @param point 终坐标
+ *
+ *  @return 返回坐标的中间坐标
+ */
+CGPoint _CGPointForMiddle(CGPoint point);
+
+/**
+ *  计算两坐标的中间坐标
+ *
+ *  @param point1 终坐标
+ *  @param point2 起坐标
+ *
+ *  @return 返回两坐标的中间坐标
+ */
+CGPoint _CGPointMiddlePoint(CGPoint point1, CGPoint point2);
 @end

@@ -9,6 +9,7 @@
 #import "CGCropImage.h"
 #import "CGZoomImageView.h"
 #import "CGCropView.h"
+#import "NSObject+AreaCalculate.h"
 
 @interface CGCropImage ()<UIGestureRecognizerDelegate, CGZoomImageViewDelegate, CGCropViewDelegate>
 {
@@ -68,7 +69,7 @@
 {
     _image = image;
     self.imageView.image = image;
-    self.imageView.isZoomLessThanMinScale = NO;
+    self.imageView.isZoomLessThanMinScale = YES;
     
     [self cropView];
 }
@@ -85,7 +86,8 @@
 #pragma mark - CGZoomImageViewDelegate
 - (void)zoomImageView:(CGZoomImageView *)zoomImageView imageRect:(CGRect)imageRect
 {
-    
+    CGRect maxRect = [[[self cropView] delegate] setupAvailableAreaCropView:[self cropView]];
+    [[self cropView] setCurrentShowAreaCropView:[self automaticSetupAvailableRect_maxRect:maxRect scale:[[self cropView] fixedProportionFloat] currentRect:[[self cropView] currentShowAreaCropView]]];
 }
 
 #pragma mark - CGCropViewDelegate
