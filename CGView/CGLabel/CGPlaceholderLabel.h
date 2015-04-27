@@ -15,6 +15,22 @@
  */
 @interface CGPlaceholderLabel : UILabel
 
+//@property (strong, nonatomic) NSString *placeholderText;
+//@property (strong, nonatomic, readonly) UILabel *placeholderLabel;
+
+/**
+ 默认添加的提示文字
+ */
 @property (strong, nonatomic) NSString *placeholderText;
-@property (strong, nonatomic, readonly) UILabel *placeholderLabel;
+
+/**
+ 为提示文字placeholderText 设置的属性
+ */
+@property (strong, nonatomic) NSDictionary *attributedDictionary;
+
+/**
+ 显示的带属性提示文字，会忽略attributedDictionary属性
+ */
+@property (strong, nonatomic) NSAttributedString *placeholderAttributedText;
+
 @end

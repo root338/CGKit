@@ -17,5 +17,12 @@
  */
 + (UILabel *)createAutoLayoutLabel;
 
-
+/**
+ *  创建定制化的文本框
+ *
+ *  @param textColor 设置文本框的字体颜色
+ *
+ *  @return 返回创建好的文本视图
+ */
++ (UILabel *)createCustormizedLabel:(UIColor *)textColor;
 @end

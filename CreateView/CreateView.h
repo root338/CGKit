@@ -10,5 +10,11 @@
 #define PDPracticeDemo_CreateView_h
 
 #import "UILabel+CreateAutoLayout.h"
+#import "UIButton+CreateAutoLayout.h"
+#import "UIImageView+CreateAutoLayout.h"
+#import "UITextField+CreateAutoLayout.h"
+
+
+#import "UIView+CreateSubAutoLayout.h"
 
 #endif
