@@ -15,8 +15,38 @@
 @dynamic height;
 
 @dynamic origin;
-@dynamic originY;
-@dynamic originX;
+@dynamic y;
+@dynamic x;
+
+- (CGFloat)x
+{
+    return self.frame.origin.x;
+}
+
+- (CGFloat)y
+{
+    return self.frame.origin.y;
+}
+
+- (CGPoint)origin
+{
+    return self.frame.origin;
+}
+
+- (CGFloat)width
+{
+    return self.bounds.size.width;
+}
+
+- (CGFloat)height
+{
+    return self.bounds.size.height;
+}
+
+- (CGSize)size
+{
+    return self.bounds.size;
+}
 
 - (void)setSize:(CGSize)size
 {
@@ -24,29 +54,19 @@
     frame.size = size;
     self.frame = frame;
 }
-- (CGSize)size
-{
-    return self.frame.size;
-}
 
 - (void)setWidth:(CGFloat)width
 {
-    CGSize size = CGSizeMake(width, self.bounds.size.height);
-    self.size = size;
-}
-- (CGFloat)width
-{
-    return CGRectGetWidth(self.bounds);
+    CGRect frame = self.frame;
+    frame.size.width = width;
+    self.frame = frame;
 }
 
 - (void)setHeight:(CGFloat)height
 {
-    CGSize size = CGSizeMake(self.bounds.size.height, height);
-    self.size = size;
-}
-- (CGFloat)height
-{
-    return CGRectGetHeight(self.bounds);
+    CGRect frame = self.frame;
+    frame.size.height = height;
+    self.frame = frame;
 }
 
 - (void)setOrigin:(CGPoint)origin
@@ -55,30 +75,19 @@
     frame.origin = origin;
     self.frame = frame;
 }
-- (CGPoint)origin
+
+- (void)setX:(CGFloat)x
 {
-    return self.frame.origin;
+    CGRect frame = self.frame;
+    frame.origin.x = x;
+    self.frame = frame;
 }
 
-- (void)setOriginX:(CGFloat)originX
+- (void)setY:(CGFloat)y
 {
-    CGPoint origin = CGPointMake(originX, self.frame.origin.y);
-    self.origin = origin;
+    CGRect frame = self.frame;
+    frame.origin.y = y;
+    self.frame = frame;
 }
-- (CGFloat)originX
-{
-    return CGRectGetMinX(self.frame);
-}
-
-- (void)setOriginY:(CGFloat)originY
-{
-    CGPoint origin = CGPointMake(self.frame.origin.x, originY);
-    self.origin = origin;
-}
-- (CGFloat)originY
-{
-    return CGRectGetMinY(self.frame);
-}
-
 
 @end
