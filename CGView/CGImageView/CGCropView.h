@@ -6,6 +6,11 @@
 //  Copyright (c) 2015年 345. All rights reserved.
 //
 
+/**
+ 实现的不是太好，后期需要重构，
+ 现发现的不足有：
+    1. 显示的裁剪框应该新建个类来维护，方便以后显示不同形状的裁剪框
+ */
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, CropClickType){

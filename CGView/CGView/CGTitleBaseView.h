@@ -12,6 +12,8 @@
  加标题的视图的基类
  
  通过继承该类，创建两个任意UIView的视图，并赋值给 属性 leftView 和 rightView，当更新视图约束时自动设置leftView和rightView视图的约束
+ 
+ 
  */
 @interface CGTitleBaseView : CGBaseAutoLayoutView
 
@@ -38,7 +40,7 @@
 @property (assign, nonatomic) CGFloat viewSpace;
 
 /**
- *  右边视图的横向优先级  
+ *  右边视图的横向优先级  (1 ~ 1000)
  *  当值大于251时右边的视图被拉伸，否则左边的视图被拉伸
  */
 @property (assign, nonatomic) CGFloat rightViewPriority;

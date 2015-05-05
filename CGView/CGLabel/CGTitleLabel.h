@@ -12,6 +12,7 @@
  设置UIlabel的标题
  
  当使用xib时默认在xib中的title为提示文字，在xib环境下优先使用 Label 的attributedText属性
+ 
  */
 @interface CGTitleLabel : UILabel
 
