@@ -37,14 +37,14 @@ typedef NS_ENUM(NSInteger, KGCLayoutAttribute){
     kGCLayoutAttributeAll       = (kGCLayoutAttributeAllEdge | kGCLayoutAttributeSize)
 };
 
-extern NSString const *GCLayoutAttributeLeading;
-extern NSString const *GCLayoutAttributeTrailing;
-extern NSString const *GCLayoutAttributeTop;
-extern NSString const *GCLayoutAttributeBottom;
-extern NSString const *GCLayoutAttributeWidth;
-extern NSString const *GCLayoutAttributeHeight;
-extern NSString const *GCLayoutAttributeCenterX;
-extern NSString const *GCLayoutAttributeCenterY;
+ NSString * const GCLayoutAttributeLeading;
+ NSString * const GCLayoutAttributeTrailing;
+ NSString * const GCLayoutAttributeTop;
+ NSString * const GCLayoutAttributeBottom;
+ NSString * const GCLayoutAttributeWidth;
+ NSString * const GCLayoutAttributeHeight;
+ NSString * const GCLayoutAttributeCenterX;
+ NSString * const GCLayoutAttributeCenterY;
 
 /**
  添加约束

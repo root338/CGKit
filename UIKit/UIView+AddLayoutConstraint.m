@@ -8,14 +8,14 @@
 
 #import "UIView+AddLayoutConstraint.h"
 
- NSString const *GCLayoutAttributeLeading      = @"GCLayoutAttributeLeading";
- NSString const *GCLayoutAttributeTrailing     = @"GCLayoutAttributeTrailing";
- NSString const *GCLayoutAttributeTop       = @"GCLayoutAttributeTop";
- NSString const *GCLayoutAttributeBottom    = @"GCLayoutAttributeBottom";
- NSString const *GCLayoutAttributeWidth     = @"GCLayoutAttributeWidth";
- NSString const *GCLayoutAttributeHeight    = @"GCLayoutAttributeHeight";
- NSString const *GCLayoutAttributeCenterX   = @"GCLayoutAttributeCenterX";
- NSString const *GCLayoutAttributeCenterY   = @"GCLayoutAttributeCenterY";
+ NSString * const GCLayoutAttributeLeading      = @"GCLayoutAttributeLeading";
+ NSString * const GCLayoutAttributeTrailing     = @"GCLayoutAttributeTrailing";
+ NSString * const GCLayoutAttributeTop       = @"GCLayoutAttributeTop";
+ NSString * const GCLayoutAttributeBottom    = @"GCLayoutAttributeBottom";
+ NSString * const GCLayoutAttributeWidth     = @"GCLayoutAttributeWidth";
+ NSString * const GCLayoutAttributeHeight    = @"GCLayoutAttributeHeight";
+ NSString * const GCLayoutAttributeCenterX   = @"GCLayoutAttributeCenterX";
+ NSString * const GCLayoutAttributeCenterY   = @"GCLayoutAttributeCenterY";
 
 @implementation UIView (AddLayoutConstraint)
 
