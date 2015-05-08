@@ -8,8 +8,9 @@
 
 @import UIKit;
 
-@interface NSObject (AreaEdge)
 
 UIEdgeInsets UIEdgeInsetsEqualMake(CGFloat value);
 
-@end
+const UIViewAutoresizing UIViewAutoresizingFlexibleEdgeMargin;
+
+const UIViewAutoresizing UIViewAutoresizingFlexibleSize;
