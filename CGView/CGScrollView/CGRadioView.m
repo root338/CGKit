@@ -49,7 +49,6 @@
 
 - (void)setupRadioView
 {
-    
     [self.subviews enumerateObjectsUsingBlock:^(UIControl* obj, NSUInteger idx, BOOL *stop) {
         
         if ([obj tag] == _selectIndex) {
@@ -65,6 +64,13 @@
 
 - (void)handleControlEventAction:(id)sender
 {
-    self.selectControl = sender;
+    BOOL isShouldSelectedControl = YES;
+    if ([self.delegate respondsToSelector:@selector(radioView:shouldSelectedControl:)]) {
+        isShouldSelectedControl = [self.delegate radioView:self shouldSelectedControl:sender];
+    }
+    
+    if (isShouldSelectedControl) {
+        self.selectControl = sender;
+    }
 }
 @end

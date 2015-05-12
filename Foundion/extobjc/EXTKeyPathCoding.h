@@ -66,3 +66,47 @@ NSString *lowercaseStringPath = @keypath(NSString.new, lowercaseString);
 
 #define collectionKeypath4(OBJ, PATH, COLLECTION_OBJECT, COLLECTION_PATH) ([[NSString stringWithFormat:@"%s.%s",keypath(OBJ, PATH), keypath(COLLECTION_OBJECT, COLLECTION_PATH)] UTF8String])
 
+/**
+ \@keypathClassInstance allows compile-time verification of key paths. Similar to
+ \@keypath, but accept a class as parameter instead of a instance variable.
+ @code
+ 
+ NSString *objectIDPath = @keypathClassInstance(NSManagedObject, objectID);
+ // => @"objectID"
+ 
+ NSString *footerViewFramePath = @keypathClassInstance(UITableView, tableFooterView, frame);
+ // => @"frame"
+ 
+ @endcode
+ 
+ @bug In a class method, cannot use `self` as CLASS.
+ */
+
+#define keypathClassInstance(...)\
+metamacro_if_eq(2, metamacro_argcount(__VA_ARGS__))(keypathClassInstance1(__VA_ARGS__))(keypathClassInstance2(__VA_ARGS__))
+
+#define keypathClassInstance1(CLASS, PATH)\
+(({CLASS *_proxy_; ((void)(NO && ((void)_proxy_.PATH, NO)), # PATH);}))
+
+#define keypathClassInstance2(CLASS, PROPERTY, PATH)\
+(({CLASS *_proxy_; ((void)(NO && ((void)_proxy_.PROPERTY.PATH, NO)), # PATH);}))
+
+#pragma mark - Language Addition
+
+/** Define a const NSString
+ 
+ @code
+ 
+ RFDefineConstString(aaa);
+ RFDefineConstString(bbb, "something");
+ 
+ // Will be
+ NSString *const aaa = @"aaa";
+ NSString *const bbb = @"something";
+ 
+ @endcode
+ */
+#define RFDefineConstString(...) metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__))(_RFDefineConstString1(metamacro_at0(__VA_ARGS__)))(_RFDefineConstString2(metamacro_at0(__VA_ARGS__), metamacro_at1(__VA_ARGS__)))
+
+#define _RFDefineConstString1(name) NSString *const name = @metamacro_stringify_(name)
+#define _RFDefineConstString2(name, value) NSString *const name = @value
