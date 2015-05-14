@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 apple. All rights reserved.
 //
 
-#import "CGTabScrollView.h"
+#import "CGSingleScrollView.h"
 
-@implementation CGTabScrollView
+@implementation CGSingleScrollView
 
 /*
 // Only override drawRect: if you perform custom drawing.
