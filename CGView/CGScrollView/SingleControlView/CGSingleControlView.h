@@ -41,34 +41,21 @@
 /**
  需要显示的标题
  */
-@property (strong, nonatomic) NSArray *titles;
+@property (nonatomic) NSArray *titles;
 
 #pragma mark - 可设置子视图对象
 /**
  选择控件主视图
  */
-@property (readonly, nonatomic) CGSingleContentView* radioSetView;
+@property (readonly, nonatomic) CGSingleContentView* contentView;
 
 /**
  下方选择指示器-——滑块
  */
-@property (readonly, nonatomic) CGSingleSliderView *singleSliderView;
-
-
-#pragma mark - 单选视图内容设置
-/**
- 选择控件之间的间距
- */
-@property (assign, nonatomic) CGFloat controlSpace;
-
-
+@property (readonly, nonatomic) CGSingleSliderView *sliderView;
 
 /**
- *  设置需要添加的按钮的样式
- *
- *  @param index 添加的索引
- *
- *  @return 返回的设置好的按钮
+ 已选的控件
  */
-- (UIButton *)createSingleButtonAtIndex:(NSInteger)index;
+@property (strong, nonatomic) UIControl *selectedControl;
 @end

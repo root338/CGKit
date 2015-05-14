@@ -20,6 +20,21 @@
 
 @implementation CGSomeColorButton
 
++ (UIButton *)createButtonAtTitle:(NSString *)title normalTitleColor:(UIColor *)normalColor selectorTitleColor:(UIColor *)selectorColor
+{
+    CGSomeColorButton *button = [CGSomeColorButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:title forState:UIControlStateNormal];
+    
+    if (normalColor) {
+        [button setTitleColor:normalColor forState:UIControlStateNormal];
+    }
+    
+    if (selectorColor) {
+        [button setTitleColor:selectorColor forState:UIControlStateSelected];
+    }
+    
+    return button;
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

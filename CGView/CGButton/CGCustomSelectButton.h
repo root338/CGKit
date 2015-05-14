@@ -10,4 +10,6 @@
 
 @interface CGCustomSelectButton : UIButton
 
++ (UIButton *)createButtonAtTitle:(NSString *)title normalTitleColor:(UIColor *)normalColor selectorTitleColor:(UIColor *)selectorColor;
+
 @end

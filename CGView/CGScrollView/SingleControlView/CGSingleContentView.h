@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 apple. All rights reserved.
 //
 
-#import "CGSingleBaseContentView.h"
+#import <UIKit/UIKit.h>
 
-@interface CGSingleContentView : CGRadioView<CGSingleViewDataSource>
+@interface CGSingleContentView : UIView
 
 /**
  *  需要加载的标题列表
@@ -26,4 +26,9 @@
  设置按钮默认选中颜色
  */
 @property (strong, nonatomic) UIColor *selectedTitleColor;
+
+/**
+ *  选择控件后的回调block
+ */
+@property (copy, nonatomic) void(^selectCallback)(UIButton *selectControl);
 @end

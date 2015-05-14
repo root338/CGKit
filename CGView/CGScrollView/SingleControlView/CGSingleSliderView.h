@@ -46,16 +46,14 @@ typedef NS_ENUM(NSInteger, CGSliderWidthType) {
 @property (strong, nonatomic) UIColor *sliderColor;
 
 /**
+ 当宽度变为固定宽度时需要删除滑块与其他按钮的宽度设置
+ */
+@property (copy, nonatomic) void (^setupWidthTypeChange)(BOOL fixedWidth);
+
+/**
  *  创建一个滑块
  *
  *  @return 返回创建好的滑块
  */
 + (instancetype)createSingleSliderView;
-
-/**
- *  初始化一个滑块
- *
- *  @return 返回滑块
- */
-- (instancetype)initWithFrame:(CGRect)frame;
 @end

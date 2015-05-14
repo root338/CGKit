@@ -7,6 +7,16 @@
 //
 
 #import "CGSingleSliderView.h"
+#import "UIViewCommonDefine.h"
+#import "PureLayout.h"
+
+@interface CGSingleSliderView ()
+{
+    NSLayoutConstraint *heightConstraint;
+    NSLayoutConstraint *widthConstraint;
+}
+
+@end
 
 @implementation CGSingleSliderView
 
@@ -17,11 +27,14 @@
     return sliderView;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)init
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
+        _sliderColor = __KRGB(253,120,1);
+        self.sliderHeight = 2;
+        _sliderWidthType = CGSliderWidthTypeDefault;
     }
     return self;
 }
@@ -30,24 +43,78 @@
 - (void)setSliderColor:(UIColor *)sliderColor
 {
     _sliderColor = sliderColor;
+    self.backgroundColor = _sliderColor;
 }
 
 - (void)setSliderHeight:(CGFloat)sliderHeight
 {
-    _sliderHeight = sliderHeight;
+    if (_sliderHeight != sliderHeight) {
+        
+        _sliderHeight = sliderHeight;
+        
+        [self removeWidthConstraint];
+        heightConstraint = [self autoSetDimension:ALDimensionHeight toSize:_sliderHeight];
+    }
+    
 }
 
 - (void)setSliderWidth:(CGFloat)sliderWidth
 {
+    
     _sliderWidth = sliderWidth;
+    [self handleWidthTypeChange];
 }
 
 - (void)setSliderWidthType:(CGSliderWidthType)sliderWidthType
 {
+    
     _sliderWidthType = sliderWidthType;
+    [self handleWidthTypeChange];
 }
 
+- (void)handleWidthTypeChange
+{
+    BOOL isFixed = NO;
+    switch (_sliderWidthType) {
+        case CGSliderWidthTypeDefault:
+            
+            [self removeWidthConstraint];
+            break;
+        case CGSliderWidthTypeCustomWidth:
+        case CGSliderWidthTypeEqualTitleWidth:
+            
+            isFixed = YES;
+            [self setupWidthConstraint:_sliderWidth];
+            break;
+        default:
+            break;
+    }
+    [self senderCallback:isFixed];
+}
 
+- (void)removeWidthConstraint
+{
+    if (heightConstraint) {
+        [self removeConstraint:heightConstraint];
+        heightConstraint = nil;
+    }
+}
+
+- (void)setupWidthConstraint:(CGFloat)width
+{
+    if (widthConstraint) {
+        widthConstraint.constant = width;
+    }else {
+        widthConstraint = [self autoSetDimension:ALDimensionWidth toSize:width];
+    }
+}
+
+- (void)senderCallback:(BOOL)isFixedWidth
+{
+    if (self.setupWidthTypeChange) {
+        self.setupWidthTypeChange(isFixedWidth);
+    }
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

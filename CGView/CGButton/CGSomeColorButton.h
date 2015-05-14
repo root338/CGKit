@@ -6,13 +6,15 @@
 //  Copyright (c) 2015年 Chinamobo. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CGCustomSelectButton.h"
 
 /**
  当点击按钮时按钮标题颜色的透明度减小
  
  虽然systemButton 的样式已经实现但是，systemButton在选中后标题加入有背景色
  */
-@interface CGSomeColorButton : UIButton
+@interface CGSomeColorButton : CGCustomSelectButton
+
++ (UIButton *)createButtonAtTitle:(NSString *)title normalTitleColor:(UIColor *)normalColor selectorTitleColor:(UIColor *)selectorColor;
 
 @end

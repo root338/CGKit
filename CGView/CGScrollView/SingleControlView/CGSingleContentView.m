@@ -9,10 +9,13 @@
 #import "CGSingleContentView.h"
 #import "PureLayout.h"
 #import "CGSomeColorButton.h"
+#import "CGSingleBaseContentView.h"
 
-@interface CGSingleContentView ()
+@interface CGSingleContentView ()<CGSingleViewDataSource, CGRadioViewDelegate>
 {
-//    BOOL didSetupConstraints;
+    BOOL didSetupConstraints;
+    
+    CGSingleBaseContentView *_contentView;
 }
 @end
 
@@ -34,14 +37,28 @@
 ///用于初始化内容视图
 - (void)setupContentView
 {
-    if (self.delegate) {
+    if (!_contentView) {
+        _contentView = [[CGSingleBaseContentView alloc] init];
         
+        //放在_contentView.dataSource = self;代码前面时，默认选择时也会回调
+        _contentView.delegate = self;
+        
+        [self addSubview:_contentView];
     }
+    
+    _contentView.dataSource = self;
+    
 }
 
 #pragma mark - update layout
 - (void)updateConstraints
 {
+    if (!didSetupConstraints) {
+        
+        [_contentView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        didSetupConstraints = YES;
+    }
     [super updateConstraints];
 }
 
@@ -51,21 +68,25 @@
     return self.titleArray.count;
 }
 
-- (UIControl *)singleView:(CGRadioView *)singleView controlAtIndex:(NSIndexPath *)indexPath
+- (NSString *)singleView:(CGRadioView *)singleView controlTitleAtIndex:(NSIndexPath *)indexPath
 {
-    CGSomeColorButton *button = [CGSomeColorButton buttonWithType:UIButtonTypeCustom];
-    
-    ///仅在一行时有用
-    //设置视图索引
-    button.tag = indexPath.row;
-    
-    //设置按钮内部内容
-    [button setTitle:self.titleArray[indexPath.row] forState:UIControlStateNormal];
-    
-    //设置按钮外观颜色
-    [button setTitleColor:self.normalTitleColor forState:UIControlStateNormal];
-    [button setTitleColor:self.selectedTitleColor forState:UIControlStateSelected];
-    
-    return button;
+    return self.titleArray[indexPath.row];
 }
+
+- (void)singleView:(CGRadioView *)singleView titleAtIndexPath:(NSIndexPath *)indexPath normalColor:(UIColor *__autoreleasing *)normalColor selectColor:(UIColor *__autoreleasing *)selectColor
+{
+    *normalColor = self.normalTitleColor;
+    *selectColor = self.selectedTitleColor;
+}
+
+#pragma mark - CGRadioViewDelegate
+- (void)radioView:(CGRadioView *)radioView selectedControl:(UIControl *)selectedControl
+{
+    if (self.selectCallback) {
+        
+//        NSAssert([selectedControl isKindOfClass:[UIButton class]], @"必须是UIButton的子类");
+        self.selectCallback((id)selectedControl);
+    }
+}
+
 @end
