@@ -10,15 +10,17 @@
 #import "PureLayout.h"
 #import "UIViewCommonDefine.h"
 #import "CGSomeColorButton.h"
-#import "CGRadioView.h"
+#import "CGSingleContentView.h"
 #import "UIView+Frame.h"
+#import "CGSingleSliderView.h"
 
 @interface CGSingleControlView ()<CGRadioViewDelegate>
 {
     ///单选视图
-    CGRadioView *_contentView;
+    CGSingleContentView *_contentView;
+    
     ///滑块视图
-    UIView *_sliderView;
+    CGSingleSliderView *_sliderView;
     
     //约束相关
     
@@ -191,7 +193,7 @@
 - (UIView *)sliderView
 {
     if (![_sliderView superview]) {
-        _sliderView = [UIView newAutoLayoutView];
+        _sliderView = [CGSingleSliderView createSingleSliderView];
         [self addSubview:_sliderView];
     }
     return _sliderView;

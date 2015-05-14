@@ -10,19 +10,8 @@
 
 @class CGSingleControlView;
 @class CGSomeColorButton;
-@class CGRadioView;
-
-typedef NS_ENUM(NSInteger, CGSliderWidthType) {
-    
-    ///使用默认样式与选择的控件一样宽
-    CGSliderWidthTypeDefault,
-    
-    ///与控件标题一样宽
-    CGSliderWidthTypeEqualTitleWidth,
-    
-    ///自定义
-    CGSliderWidthTypeCustomWidth
-};
+@class CGSingleContentView;
+@class CGSingleSliderView;
 
 @protocol CGSingleControlViewDelegate <NSObject>
 
@@ -58,28 +47,13 @@ typedef NS_ENUM(NSInteger, CGSliderWidthType) {
 /**
  选择控件主视图
  */
-@property (readonly, nonatomic) CGRadioView* radioSetView;
-
-#pragma mark - 滑块视图样式设定
-/**
- 设置滑块宽度类型
- */
-@property (assign, nonatomic) CGSliderWidthType sliderWidthType;
+@property (readonly, nonatomic) CGSingleContentView* radioSetView;
 
 /**
- 下方滑块的高度 默认值为2
+ 下方选择指示器-——滑块
  */
-@property (assign, nonatomic) CGFloat sliderHeight;
+@property (readonly, nonatomic) CGSingleSliderView *singleSliderView;
 
-/**
- 只有当 CGSliderWidthType 为 CGSliderWidthTypeCustomWidth 时自动设置的值才有效
- */
-@property (assign, nonatomic) CGFloat sliderWidth;
-
-/**
- *  下方滑块的颜色 默认颜色为rgba(253,120,1,1)
- */
-@property (strong, nonatomic) UIColor *sliderColor;
 
 #pragma mark - 单选视图内容设置
 /**
@@ -87,15 +61,7 @@ typedef NS_ENUM(NSInteger, CGSliderWidthType) {
  */
 @property (assign, nonatomic) CGFloat controlSpace;
 
-/**
- 设置按钮默认标题颜色
- */
-@property (strong, nonatomic) UIColor *normalTitleColor;
 
-/**
- 设置按钮默认选中颜色
- */
-@property (strong, nonatomic) UIColor *selectedTitleColor;
 
 /**
  *  设置需要添加的按钮的样式

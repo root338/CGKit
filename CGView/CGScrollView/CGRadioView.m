@@ -58,7 +58,9 @@
             self.selectControl = obj;
         }
         
-        [obj addTarget:self action:@selector(handleControlEventAction:) forControlEvents:UIControlEventTouchUpInside];
+        if ([obj respondsToSelector:@selector(addTarget:action:forControlEvents:)]) {
+            [obj addTarget:self action:@selector(handleControlEventAction:) forControlEvents:UIControlEventTouchUpInside];
+        }
     }];
 }
 

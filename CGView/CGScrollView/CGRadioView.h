@@ -49,6 +49,11 @@
  */
 @property (assign, nonatomic) NSInteger selectIndex;
 
+///**
+// *  选择控件的位置
+// */
+//@property (strong, nonatomic) NSIndexPath *selectIndexPath;
+
 /**
  *  设置单选视图，在添加完控件后更新视图信息
  */
