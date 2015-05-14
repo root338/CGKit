@@ -20,6 +20,16 @@
  */
 - (void)radioView:(CGRadioView *)radioView selectedControl:(UIControl *)selectedControl;
 
+/**
+ *  返回所选择的控件是否应该被选
+ *
+ *  @param radioView       单选视图
+ *  @param selectedControl 将要选择的控件
+ *
+ *  @return 返回一个BOOL值，表示是否应该被选
+ */
+- (BOOL)radioView:(CGRadioView *)radioView shouldSelectedControl:(UIControl *)selectedControl;
+
 @end
 
 /**

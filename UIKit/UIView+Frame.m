@@ -7,6 +7,7 @@
 //
 
 #import "UIView+Frame.h"
+#import "EXTKeyPathCoding.h"
 
 @implementation UIView (Frame)
 
@@ -17,6 +18,37 @@
 @dynamic origin;
 @dynamic y;
 @dynamic x;
+
++ (NSSet *)keyPathsForValuesAffectingX {
+    return [NSSet setWithObject:@keypathClassInstance(UIView, frame)];
+}
++ (NSSet *)keyPathsForValuesAffectingY {
+    return [NSSet setWithObject:@keypathClassInstance(UIView, frame)];
+}
+
++ (NSSet *)keyPathsForValuesAffectingOrigin
+{
+    return [NSSet setWithObject:@keypathClassInstance(UIView, frame)];
+}
+
+
++ (NSSet *)keyPathsForValuesAffectingWidth
+{
+    return [NSSet setWithObject:@keypathClassInstance(UIView, bounds)];
+}
+
++ (NSSet *)keyPathsForValuesAffectingHeight
+{
+    return [NSSet setWithObject:@keypathClassInstance(UIView, bounds)];
+}
+
++ (NSSet *)keyPathsForValuesAffectingSize
+{
+    return [NSSet setWithObject:@keypathClassInstance(UIView, bounds)];
+}
+
+
+
 
 - (CGFloat)x
 {
