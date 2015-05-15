@@ -9,7 +9,7 @@
 #import "CGSingleScrollView.h"
 
 #import "PureLayout.h"
-#import "CGRadioView.h"
+#import "CGRadioBaseView.h"
 #import "UIView+Frame.h"
 
 @interface CGSingleScrollView ()
@@ -26,7 +26,7 @@
 @property (strong, nonatomic) UIScrollView *scrollView;
 
 ///加载选择的控件
-@property (strong, nonatomic) CGRadioView *contentView;
+@property (strong, nonatomic) CGRadioBaseView *contentView;
 
 ///加载的视图宽度集合
 @property (strong, nonatomic) NSMutableArray *totalViewWidths;
@@ -50,25 +50,35 @@
     return self;
 }
 
-- (void)setDelegate:(id<CGSingleScrollViewDataSource>)delegate
+#pragma mark - setup view
+- (void)setItemSpace:(CGFloat)itemSpace
 {
-    if (![_delegate isEqual:delegate]) {
-        
-        _delegate = delegate;
-        [self performSelector:@selector(reloadAllData) withObject:nil afterDelay:0.0];
-    }
+    _itemSpace = itemSpace;
+    self.contentView.itemSpace = itemSpace;
 }
 
-#pragma mark - setup view
-- (CGRadioView *)contentView
+- (void)setItemWidth:(CGFloat)itemWidth
+{
+    _itemWidth = itemWidth;
+    self.contentView.itemWidth = itemWidth;
+}
+
+- (CGRadioBaseView *)contentView
 {
     if (_contentView) {
         return _contentView;
     }
     
-    _contentView = [[CGRadioView alloc] init];
+    _contentView = [[CGRadioBaseView alloc] init];
+    _contentView.itemHeight = self.height;
+    [self setupRadioCallback];
     [[self scrollView] addSubview:_contentView];
     return _contentView;
+}
+
+- (CGRadioBaseView *)singleView
+{
+    return self.contentView;
 }
 
 - (UIScrollView *)scrollView
@@ -96,67 +106,80 @@
     return _totalViewWidths;
 }
 
-- (void)clearAllData
+- (void)setupRadioCallback
 {
+    __weak CGSingleScrollView *weakSelf = self;
+    _contentView.didSetupViewFinish = ^(void) {
+        
+        CGSingleScrollView *strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf updateRadioView];
+        }
+    };
     
-    for (id subView in self.contentView.subviews) {
-        [subView removeFromSuperview];
+    _contentView.didSelectedCallback = ^(void) {
+        
+        CGSingleScrollView *strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf updateScrollLocation];
+        }
+    };
+}
+
+- (void)updateScrollLocation
+{
+    //获取当前选中按钮在滑动视图的坐标
+    CGPoint startPointToScrollView = [self.contentView convertPoint:self.contentView.selectControl.origin toView:self.scrollView];
+    
+    //获取当前选中按钮在主视图的坐标
+    CGPoint startPointToContentView = [self.contentView convertPoint:self.contentView.selectControl.origin toView:self];
+    
+    //
+//    CGPoint nextEndPoint = CGPointZero;
+//    CGPoint previousEndPoint = CGPointZero;
+//    
+//    //获取选中按钮下一个视图在滑动视图的坐标
+//    UIView *nextView = [self.contentView selectedNextView];
+//    if (nextView) {
+//        CGPoint nextPointToScrollView = [self.contentView convertPoint:nextView.origin toView:self.scrollView];
+//        CGPoint nextPointToContentView = [self.contentView convertPoint:nextView.origin toView:self];
+//        
+//        nextEndPoint = CGPointMake(nextPointToScrollView.x + self.itemSpace + nextView.width, nextView.y);
+//    }
+//    
+//    //获取选中按钮上一个视图在滑动视图的坐标
+//    UIView *previousView = [self.contentView selectedPreviousView];
+//    if (previousView) {
+//        CGPoint previousPointToScrollView = [self.contentView convertPoint:previousView.origin toView:self.scrollView];
+//        CGPoint previousPointToContentView = [self.contentView convertPoint:previousView.origin toView:self];
+//        
+//        previousEndPoint = CGPointMake(previousPointToScrollView.x + self.itemSpace + previousView.width, previousView.y);
+//    }
+    
+    startPointToScrollView.x -= startPointToContentView.x;
+    
+    CGPoint endPoint = CGPointMake(startPointToScrollView.x + self.itemSpace + self.contentView.selectControl.width, startPointToScrollView.y);
+    
+    if (startPointToScrollView.x + self.scrollView.width > self.scrollView.contentSize.width) {
+        return;
     }
-    _contentView.selectControl = nil;
-    _contentView.selectIndex = 0;
     
-    [self.totalViewWidths removeAllObjects];
-    
-//    totalContentSize = CGSizeZero;
-}
-
-- (void)reloadAllData
-{
-    [self clearAllData];
-    
-    _totalCount = [self.delegate tabScrollViewNumberView:self];
-    
-    [self updateContentViewAtStartIndex:0];
-}
-
-- (void)reloadIndexs:(NSArray *)indexs
-{
-    
+    if (endPoint.x + self.scrollView.width > self.scrollView.contentSize.width) {
+        endPoint = CGPointMake(self.scrollView.contentSize.width - self.scrollView.width, endPoint.y);
+    }
+//    CGPoint currentContentOffset = self.scrollView.contentOffset;
+//    CGPoint centerPoint = CGPointMake(currentContentOffset.x + self.scrollView.width / 2, self.scrollView.height / 2);
+//    
+    [self.scrollView setContentOffset:endPoint animated:YES];
 }
 
 /**
  *  更新contentView视图中的内容
  *
- *  @param index 从哪个视图索引开始更新
  */
-- (void)updateContentViewAtStartIndex:(NSInteger)index
+- (void)updateRadioView
 {
-    //设置后的总宽度
-    CGFloat totalWidth;
-    //间距
-    CGFloat spaceWith = self.itemSpace;
-    
-    for (NSInteger index = 0; index < _totalCount; index++) {
-        
-        CGFloat width = self.itemWidth;
-        if ([self.delegate respondsToSelector:@selector(tabScrollView:widthForIndex:)]) {
-            width = [self.delegate tabScrollView:self widthForIndex:index];
-        }
-        
-        UIView *view = [self.delegate tabScrollView:self numberViewAtIndex:index];
-        
-        [self.totalViewWidths addObject:@(width)];
-        
-        CGRect frame = CGRectMake(totalWidth, 0, width, self.height);
-        view.frame = frame;
-        
-        [self.contentView addSubview:view];
-        
-        totalWidth += width + spaceWith;
-    }
-    
-    [self.contentView setupRadioView];
-    self.contentView.frame = CGRectMake(0, 0, totalWidth, self.height);
+    self.contentView.frame = CGRectMake(0, 0, self.contentView.totalWidths, self.height);
     self.scrollView.contentSize = self.contentView.size;
 }
 
@@ -172,11 +195,4 @@
     }
     [super updateConstraints];
 }
-
-#pragma mark - 点击事件
-//- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
-//{
-//    
-//    return YES;
-//}
 @end

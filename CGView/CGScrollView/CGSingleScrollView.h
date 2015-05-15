@@ -9,35 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class CGSingleScrollView;
-@protocol CGSingleScrollViewDataSource <NSObject>
-
-/**
- 添加多少个视图
- */
-- (NSInteger)tabScrollViewNumberView:(CGSingleScrollView *)tabScrollView;
-
-/**
- 添加视图的样式
- */
-- (UIView *)tabScrollView:(CGSingleScrollView *)tabScrollView numberViewAtIndex:(NSInteger)index;
-
-@optional
-/**
- 设置视图的宽度
- */
-- (CGFloat)tabScrollView:(CGSingleScrollView *)tabScrollView widthForIndex:(NSInteger)index;
-
-///因为间距是两个视图之间在有的，所以还不知道单个设置两个视图的间距时 这个方法返回的值作用的是左边还是右边
-///**
-// *  设置视图之间的间距
-// *
-// *  @param tabScrollView 滑动视图
-// *  @param index 所设置的控件索引
-// *
-// *  @return 返回设置的索引
-// */
-//- (CGFloat)tabScrollView:(CGSingleScrollView *)tabScrollView spaceForIndex:(NSInteger)index;
-@end
+@class CGRadioBaseView;
 
 /**
  *  横向滑动选择视图
@@ -47,7 +19,10 @@
  */
 @interface CGSingleScrollView : UIView
 
-@property (weak, nonatomic) id<CGSingleScrollViewDataSource> delegate;
+/**
+ 单选视图
+ */
+@property (readonly, nonatomic) CGRadioBaseView *singleView;
 
 /**
  选择的宽度
@@ -58,15 +33,5 @@
  视图之间的间距
  */
 @property (assign, nonatomic) CGFloat itemSpace;
-
-/**
- 刷新指定索引的视图
- */
-//- (void)reloadIndexs:(NSArray *)indexs;
-
-/**
- *  刷新整个浏览视图
- */
-- (void)reloadAllData;
 
 @end

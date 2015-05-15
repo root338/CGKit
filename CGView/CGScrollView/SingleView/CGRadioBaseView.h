@@ -32,6 +32,26 @@
 @property (assign, nonatomic) BOOL isAutoLaout;
 
 /**
+ 设置子按钮的高度
+ */
+@property (assign, nonatomic) CGFloat itemHeight;
+
+/**
+ 设置子按钮的间距
+ */
+@property (assign, nonatomic) CGFloat itemSpace;
+
+/**
+ 设置子按钮的宽度
+ */
+@property (assign, nonatomic) CGFloat itemWidth;
+
+/**
+ 当加载视图完成后，回调此block
+ */
+@property (copy, nonatomic) void(^didSetupViewFinish)(void);
+
+/**
  刷新整个单选视图
  */
 - (void)reloadAllView;
@@ -55,4 +75,13 @@
  */
 - (UIControl *)setupRadioDefaultControlAtIndexPath:(NSIndexPath *)indexPath title:(NSString *)title;
 
+/**
+ 获取选中视图的下一个视图
+ */
+- (UIView *)selectedNextView;
+
+/**
+ 获取选中视图的上一个视图
+ */
+- (UIView *)selectedPreviousView;
 @end

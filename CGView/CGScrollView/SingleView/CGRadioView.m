@@ -68,6 +68,10 @@
             
             [self.delegate radioView:self selectedControl:_selectControl];
         }
+        
+        if (self.didSelectedCallback) {
+            self.didSelectedCallback();
+        }
     }
 }
 

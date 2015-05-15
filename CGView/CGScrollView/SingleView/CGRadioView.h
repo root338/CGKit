@@ -55,6 +55,11 @@
 //@property (strong, nonatomic) NSIndexPath *selectIndexPath;
 
 /**
+ 选择回调
+ */
+@property (copy, nonatomic) void(^didSelectedCallback)(void);
+
+/**
  *  设置单选视图，在添加完控件后更新视图信息
  */
 - (void)setupRadioView;

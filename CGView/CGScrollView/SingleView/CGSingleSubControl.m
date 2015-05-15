@@ -8,6 +8,7 @@
 
 #import "CGSingleSubControl.h"
 #import "PureLayout.h"
+#import "AreaEdge.h"
 
 @interface CGSingleSubControl ()
 {
@@ -20,15 +21,24 @@
 {
     _contentView = contentView;
     
+    [self addSubview:contentView];
+    
+    _contentView.autoresizingMask = UIViewAutoresizingFlexibleEdgeMargin;
 }
 
-- (void)updateConstraints
+- (void)layoutSubviews
 {
-    if (didSetupConstraints) {
-        
-        [_contentView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-        didSetupConstraints = YES;
-    }
-    [super updateConstraints];
+    [super layoutSubviews];
+    
+    _contentView.frame = self.bounds;
 }
+//- (void)updateConstraints
+//{
+//    if (didSetupConstraints) {
+//        
+//        [_contentView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+//        didSetupConstraints = YES;
+//    }
+//    [super updateConstraints];
+//}
 @end

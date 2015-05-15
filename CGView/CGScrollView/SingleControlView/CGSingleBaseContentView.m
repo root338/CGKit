@@ -29,7 +29,7 @@
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
         _spaceMargin = YES;
-        _itemSpace = 0;
+        _itemMarginSpace = 0;
         _matchedSize = YES;
     }
     return self;
@@ -48,7 +48,6 @@
     [self updateConstraints];
 }
 
-
 #pragma mark - update layout
 - (void)updateConstraints
 {
@@ -60,7 +59,7 @@
             if (self.subviews.count == 1) {
                 [self.subviews[0] autoPinEdgesToSuperviewEdgesWithInsets:self.controlEdgeInset];
             }else {
-                [self.subviews autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeHorizontal withFixedSpacing:self.itemSpace insetSpacing:self.spaceMargin matchedSizes:self.matchedSize];
+                [self.subviews autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeHorizontal withFixedSpacing:self.itemMarginSpace insetSpacing:self.spaceMargin matchedSizes:self.matchedSize];
                 //此处是否需要加上按钮与父视图之间的约束，以后再看
                 [self.subviews[0] autoPinEdgeToSuperviewEdge:ALEdgeTop];
                 [self.subviews[0] autoPinEdgeToSuperviewEdge:ALEdgeBottom];

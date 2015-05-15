@@ -70,6 +70,11 @@
     
     self.totalWidths = totalWidth;
     [self setupRadioView];
+    
+    if (self.didSetupViewFinish) {
+        
+        self.didSetupViewFinish();
+    }
 }
 
 - (UIControl *)setupRadioContentViewAtIndexPath:(NSIndexPath *)indexPath
@@ -79,13 +84,13 @@
         
         //若类实现singleView:controlAtIndex:方法，则加载自定义视图
         UIView *subView = [self.dataSource singleView:self controlAtIndex:indexPath];
-        CGSingleSubControl *ctl = nil;
+        
+        CGSingleSubControl *ctl = [[CGSingleSubControl alloc] init];
         if (self.isAutoLaout) {
             
-            ctl = [CGSingleSubControl newAutoLayoutView];
+            ctl.translatesAutoresizingMaskIntoConstraints = NO;
         }else {
             
-            ctl = [[CGSingleSubControl alloc] init];
         }
         
         ctl.contentView = subView;
@@ -118,13 +123,35 @@
 
 - (void)setupRadioContent:(UIControl *)control frameAtIndexPath:(NSIndexPath *)indexPath totalWidth:(CGFloat *)totalWidth
 {
+    
+    CGFloat width = self.itemWidth;
     if (!self.isAutoLaout && [self.dataSource respondsToSelector:@selector(singleView:widthForIndexPath:)]) {
         
-        CGFloat totalAllWidth = *totalWidth;
-        control.width = [self.dataSource singleView:self widthForIndexPath:indexPath];
-        control.x = totalAllWidth;
-        
-        *totalWidth += control.width;
+        width = [self.dataSource singleView:self widthForIndexPath:indexPath];
     }
+    
+    CGFloat totalAllWidth = *totalWidth + self.itemSpace;
+    control.frame = CGRectMake(totalAllWidth, 0, width, self.itemHeight);
+    
+    *totalWidth += control.width + self.itemSpace;
+}
+
+- (UIView *)selectedNextView
+{
+    return [self selectedIsNextView:YES];
+}
+
+- (UIView *)selectedPreviousView
+{
+    return [self selectedIsNextView:NO];
+}
+
+- (UIView *)selectedIsNextView:(BOOL)isNextView
+{
+    UIView *view = nil;
+    if (self.selectControl) {
+        view = [self viewWithTag:self.selectControl.tag + (isNextView ? 1 : -1)];
+    }
+    return view;
 }
 @end

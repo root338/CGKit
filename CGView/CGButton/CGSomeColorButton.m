@@ -25,6 +25,12 @@
     CGSomeColorButton *button = [CGSomeColorButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
     
+    if (!normalColor) {
+        normalColor = [UIColor blackColor];
+    }
+    if (!selectorColor) {
+        selectorColor = [UIColor redColor];
+    }
     if (normalColor) {
         [button setTitleColor:normalColor forState:UIControlStateNormal];
     }
