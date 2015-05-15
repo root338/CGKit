@@ -11,6 +11,8 @@
 
 @import UIKit;
 
+#define DEBUG 1
+
 #define __KLessThanOrEqual(a, max) \
 ( (a) > (max) ) ? max : a
 

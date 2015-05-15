@@ -23,7 +23,36 @@
 
 #pragma mark - create (init) 
 
+#pragma mark - setup property
+- (UIColor *)normalTitleColor
+{
+    if (_normalTitleColor) {
+        return _normalTitleColor;
+    }
+    
+    _normalTitleColor = [UIColor blackColor];
+    return _normalTitleColor;
+}
 
+- (UIColor *)selectedTitleColor
+{
+    if (_selectedTitleColor) {
+        return _selectedTitleColor;
+    }
+    
+    _selectedTitleColor = [UIColor redColor];
+    return _selectedTitleColor;
+}
+
+- (CGRadioView *)radioView
+{
+    return [self contentView];
+}
+
+- (void)setDefaultSelectedIndex:(NSInteger)defaultSelectedIndex
+{
+    [[self contentView] initializationSelectedIndex:defaultSelectedIndex];
+}
 
 #pragma mark - setup content view
 - (void)setTitleArray:(NSMutableArray *)titleArray
@@ -34,8 +63,7 @@
     }
 }
 
-///用于初始化内容视图
-- (void)setupContentView
+- (CGSingleBaseContentView *)contentView
 {
     if (!_contentView) {
         _contentView = [[CGSingleBaseContentView alloc] init];
@@ -45,9 +73,13 @@
         
         [self addSubview:_contentView];
     }
-    
-    _contentView.dataSource = self;
-    
+    return _contentView;
+}
+
+///用于初始化内容视图
+- (void)setupContentView
+{
+    [self contentView].dataSource = self;
 }
 
 #pragma mark - update layout

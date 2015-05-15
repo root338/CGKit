@@ -53,8 +53,9 @@
 - (void)setDelegate:(id<CGSingleScrollViewDataSource>)delegate
 {
     if (![_delegate isEqual:delegate]) {
+        
         _delegate = delegate;
-        [self reloadAllData];
+        [self performSelector:@selector(reloadAllData) withObject:nil afterDelay:0.0];
     }
 }
 
@@ -173,9 +174,9 @@
 }
 
 #pragma mark - 点击事件
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
-{
-    
-    return YES;
-}
+//- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+//{
+//    
+//    return YES;
+//}
 @end

@@ -1,0 +1,5 @@
+iOS中的延迟加载
+
+    performSelector: withObject: afterDelay:
+    当 afterDelay 为 0 时 会在应用程序的下个主循环执行
+    拥有相同功能的还有  [[NSOperationQueue mainQueue] addOperationWithBlock:] 方法

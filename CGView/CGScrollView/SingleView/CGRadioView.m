@@ -8,6 +8,13 @@
 
 #import "CGRadioView.h"
 
+@interface CGRadioView ()
+{
+    
+}
+
+@end
+
 @implementation CGRadioView
 
 /*
@@ -17,11 +24,28 @@
     // Drawing code
 }
 */
+- (void)initializationSelectedIndex:(NSInteger)selected
+{
+    [self performSelector:@selector(setupDefaultSelectedIndex:) withObject:@(selected) afterDelay:0];
+}
+
+- (void)setupDefaultSelectedIndex:(NSNumber *)paramIndex
+{
+    if (paramIndex.integerValue < self.subviews.count) {
+        
+        [self setSelectIndex:paramIndex.integerValue];
+    }else {
+#ifdef DEBUG
+        NSAssert(nil, @"越界了 -_- ");
+#endif
+    }
+}
 
 - (void)setSelectIndex:(NSInteger)selectIndex
 {
     if (_selectIndex != selectIndex) {
         _selectIndex = selectIndex;
+        
         self.selectControl = (id)[self viewWithTag:_selectIndex];
     }
 }

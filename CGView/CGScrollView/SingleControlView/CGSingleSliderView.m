@@ -13,7 +13,7 @@
 @interface CGSingleSliderView ()
 {
     NSLayoutConstraint *heightConstraint;
-    NSLayoutConstraint *widthConstraint;
+//    NSLayoutConstraint *widthConstraint;
 }
 
 @end
@@ -32,7 +32,6 @@
     self = [super init];
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        _sliderColor = __KRGB(253,120,1);
         self.sliderHeight = 2;
         _sliderWidthType = CGSliderWidthTypeDefault;
     }
@@ -40,11 +39,11 @@
 }
 
 #pragma mark - setting property
-- (void)setSliderColor:(UIColor *)sliderColor
-{
-    _sliderColor = sliderColor;
-    self.backgroundColor = _sliderColor;
-}
+//- (void)setSliderColor:(UIColor *)sliderColor
+//{
+//    _sliderColor = sliderColor;
+//    self.backgroundColor = _sliderColor;
+//}
 
 - (void)setSliderHeight:(CGFloat)sliderHeight
 {
@@ -52,69 +51,82 @@
         
         _sliderHeight = sliderHeight;
         
-        [self removeWidthConstraint];
+        if (heightConstraint) {
+            [self removeConstraint:heightConstraint];
+        }
         heightConstraint = [self autoSetDimension:ALDimensionHeight toSize:_sliderHeight];
     }
     
 }
 
-- (void)setSliderWidth:(CGFloat)sliderWidth
-{
-    
-    _sliderWidth = sliderWidth;
-    [self handleWidthTypeChange];
-}
+//- (void)setSliderWidth:(CGFloat)sliderWidth
+//{
+//    
+//    _sliderWidth = sliderWidth;
+//    [self handleWidthTypeChange];
+//}
 
 - (void)setSliderWidthType:(CGSliderWidthType)sliderWidthType
 {
     
     _sliderWidthType = sliderWidthType;
-    [self handleWidthTypeChange];
+//    [self handleWidthTypeChange];
 }
 
-- (void)handleWidthTypeChange
-{
-    BOOL isFixed = NO;
-    switch (_sliderWidthType) {
-        case CGSliderWidthTypeDefault:
-            
-            [self removeWidthConstraint];
-            break;
-        case CGSliderWidthTypeCustomWidth:
-        case CGSliderWidthTypeEqualTitleWidth:
-            
-            isFixed = YES;
-            [self setupWidthConstraint:_sliderWidth];
-            break;
-        default:
-            break;
-    }
-    [self senderCallback:isFixed];
-}
+//- (void)handleWidthTypeChange
+//{
+//    BOOL isFixed = NO;
+//    switch (_sliderWidthType) {
+//        case CGSliderWidthTypeDefault:
+//            
+//            [self removeWidthConstraint];
+//            break;
+//        case CGSliderWidthTypeCustomWidth:
+//        case CGSliderWidthTypeEqualTitleWidth:
+//            
+//            isFixed = YES;
+//            [self setupWidthConstraint:_sliderWidth];
+//            break;
+//        default:
+//            break;
+//    }
+//    [self senderCallback:isFixed];
+//}
 
-- (void)removeWidthConstraint
-{
-    if (heightConstraint) {
-        [self removeConstraint:heightConstraint];
-        heightConstraint = nil;
-    }
-}
+//- (void)removeWidthConstraint
+//{
+//    if (heightConstraint) {
+//        [self removeConstraint:heightConstraint];
+//        heightConstraint = nil;
+//    }
+//}
 
-- (void)setupWidthConstraint:(CGFloat)width
-{
-    if (widthConstraint) {
-        widthConstraint.constant = width;
-    }else {
-        widthConstraint = [self autoSetDimension:ALDimensionWidth toSize:width];
-    }
-}
+//- (void)setupWidthConstraint:(CGFloat)width
+//{
+//    if (widthConstraint) {
+//        widthConstraint.constant = width;
+//    }else {
+//        widthConstraint = [self autoSetDimension:ALDimensionWidth toSize:width];
+//    }
+//}
+//
+//- (void)senderCallback:(BOOL)isFixedWidth
+//{
+//    if (self.setupWidthTypeChange) {
+//        self.setupWidthTypeChange(isFixedWidth);
+//    }
+//}
 
-- (void)senderCallback:(BOOL)isFixedWidth
-{
-    if (self.setupWidthTypeChange) {
-        self.setupWidthTypeChange(isFixedWidth);
-    }
-}
+//#pragma mark - setup slider location
+//- (void)setupSliderLeadingToViewEqual:(UIView *)view
+//{
+//    
+//}
+//
+//- (void)setupSliderWidthEqual:(CGFloat)width
+//{
+//    
+//}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

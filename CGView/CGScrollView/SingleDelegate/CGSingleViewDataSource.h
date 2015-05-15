@@ -56,4 +56,9 @@
  *  @param selectColor 选择时的颜色
  */
 - (void)singleView:(CGRadioView *)singleView titleAtIndexPath:(NSIndexPath *)indexPath normalColor:(UIColor **)normalColor selectColor:(UIColor **)selectColor;
+
+/**
+ 设置视图的宽度，
+ */
+- (CGFloat)singleView:(CGRadioView *)tabScrollView widthForIndexPath:(NSIndexPath *)indexPath;
 @end

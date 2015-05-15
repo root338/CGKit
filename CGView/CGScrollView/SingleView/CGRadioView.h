@@ -58,4 +58,11 @@
  *  设置单选视图，在添加完控件后更新视图信息
  */
 - (void)setupRadioView;
+
+/**
+ *  设置默认选择项
+ *
+ *  @param selected      所选的索引
+ */
+- (void)initializationSelectedIndex:(NSInteger)selected;
 @end

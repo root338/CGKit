@@ -69,8 +69,4 @@
  */
 - (void)reloadAllData;
 
-/**
- *  清除所有的子控件
- */
-- (void)clearAllData;
 @end

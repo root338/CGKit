@@ -6,10 +6,13 @@
 //  Copyright (c) 2015年 apple. All rights reserved.
 //
 
-#import "CGRadioView.h"
+#import "CGRadioBaseView.h"
 #import "CGSingleViewDataSource.h"
 
-@interface CGSingleBaseContentView : CGRadioView
+/**
+ *  继承单选视图，对视图属性进行了扩展，主要添加子按钮之间位置的设定（添加约束显示内容）
+ */
+@interface CGSingleBaseContentView : CGRadioBaseView
 
 /**
  加载源数据时必要的方法

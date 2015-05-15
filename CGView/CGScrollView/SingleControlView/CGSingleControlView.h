@@ -29,13 +29,12 @@
 /**
  横向选择视图
  
- 不足：该视图适合一次性规定的视图，动态添加暂时没有完成
- 
-    后续的动态添加可以继承该类，在子类中进行
+ 该类主要设置内容：不是加载数据而是通过值传递给子视图
+ 主要逻辑是设置滑块可变参数，比如设置滑块宽度，显示位置
  */
 @interface CGSingleControlView : UIView
 
-@property (weak, nonatomic) IBOutlet id<CGSingleControlViewDelegate> delegate;
+//@property (weak, nonatomic) IBOutlet id<CGSingleControlViewDelegate> delegate;
 
 #pragma mark - 添加数据
 /**
@@ -50,12 +49,18 @@
 @property (readonly, nonatomic) CGSingleContentView* contentView;
 
 /**
- 下方选择指示器-——滑块
+ 下方选择指示器-——滑块 
+ 默认背景色和contentView视图中按钮选中颜色相同
  */
 @property (readonly, nonatomic) CGSingleSliderView *sliderView;
 
 /**
  已选的控件
  */
-@property (strong, nonatomic) UIControl *selectedControl;
+@property (readonly, nonatomic) UIControl *selectedControl;
+
+/**
+ 默认选择的控件索引
+ */
+@property (nonatomic) NSInteger defaultSelectedIndex;
 @end
