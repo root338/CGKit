@@ -128,49 +128,38 @@
 
 - (void)updateScrollLocation
 {
-    //获取当前选中按钮在滑动视图的坐标
-    CGPoint startPointToScrollView = [self.contentView convertPoint:self.contentView.selectControl.origin toView:self.scrollView];
     
-    //获取当前选中按钮在主视图的坐标
-    CGPoint startPointToContentView = [self.contentView convertPoint:self.contentView.selectControl.origin toView:self];
+    //获取当前显示的滑动区域
+    CGRect visibleRect = [self convertRect:self.bounds toView:self.contentView];
+    CGRect afterVisibleRect = visibleRect;
     
-    //
-//    CGPoint nextEndPoint = CGPointZero;
-//    CGPoint previousEndPoint = CGPointZero;
-//    
-//    //获取选中按钮下一个视图在滑动视图的坐标
-//    UIView *nextView = [self.contentView selectedNextView];
-//    if (nextView) {
-//        CGPoint nextPointToScrollView = [self.contentView convertPoint:nextView.origin toView:self.scrollView];
-//        CGPoint nextPointToContentView = [self.contentView convertPoint:nextView.origin toView:self];
-//        
-//        nextEndPoint = CGPointMake(nextPointToScrollView.x + self.itemSpace + nextView.width, nextView.y);
-//    }
-//    
-//    //获取选中按钮上一个视图在滑动视图的坐标
-//    UIView *previousView = [self.contentView selectedPreviousView];
-//    if (previousView) {
-//        CGPoint previousPointToScrollView = [self.contentView convertPoint:previousView.origin toView:self.scrollView];
-//        CGPoint previousPointToContentView = [self.contentView convertPoint:previousView.origin toView:self];
-//        
-//        previousEndPoint = CGPointMake(previousPointToScrollView.x + self.itemSpace + previousView.width, previousView.y);
-//    }
+    //获取当前选中按钮的坐标
+    CGRect selectedViewFrame = self.contentView.selectControl.frame;
     
-    startPointToScrollView.x -= startPointToContentView.x;
+    //获取选中按钮下一个按钮的坐标
+    UIView *nextView = [self.contentView selectedNextView];
+    CGRect nextViewFrame = nextView.frame;
     
-    CGPoint endPoint = CGPointMake(startPointToScrollView.x + self.itemSpace + self.contentView.selectControl.width, startPointToScrollView.y);
+    //获取选中按钮上一个按钮的坐标
+    UIView *previousView = [self.contentView selectedPreviousView];
+    CGRect previousViewFrame = previousView.frame;
     
-    if (startPointToScrollView.x + self.scrollView.width > self.scrollView.contentSize.width) {
-        return;
+    if (!CGRectContainsRect(afterVisibleRect, nextViewFrame)) {
+        //当选中按钮的下一个视图不在可视区域延伸可视区域坐标
+        afterVisibleRect.origin.x = CGRectGetMaxX(nextViewFrame) - CGRectGetWidth(visibleRect);
     }
     
-    if (endPoint.x + self.scrollView.width > self.scrollView.contentSize.width) {
-        endPoint = CGPointMake(self.scrollView.contentSize.width - self.scrollView.width, endPoint.y);
+    if (!CGRectContainsRect(afterVisibleRect, previousViewFrame)) {
+        //当选中按钮的上一个视图不在可视区域延伸可视区域坐标
+        afterVisibleRect.origin.x = previousViewFrame.origin.x;
     }
-//    CGPoint currentContentOffset = self.scrollView.contentOffset;
-//    CGPoint centerPoint = CGPointMake(currentContentOffset.x + self.scrollView.width / 2, self.scrollView.height / 2);
-//    
-    [self.scrollView setContentOffset:endPoint animated:YES];
+    
+    if (!CGRectContainsRect(afterVisibleRect, selectedViewFrame)) {
+        //当选中按钮的区域不在移动后的可选区域内将选中按钮移动视图中间
+        afterVisibleRect.origin.x = CGRectGetMaxX(selectedViewFrame) - CGRectGetWidth(selectedViewFrame);
+    }
+    
+    [self.scrollView scrollRectToVisible:afterVisibleRect animated:YES];
 }
 
 /**
