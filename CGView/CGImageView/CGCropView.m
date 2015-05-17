@@ -93,7 +93,7 @@ typedef void(^setupAreaValue)(CGFloat value);
 
 - (void)reloadUpdateCropRect
 {
-    CGRect maxAvailableRect = [self getMaxAvailableRect];
+//    CGRect maxAvailableRect = [self getMaxAvailableRect];
     
 }
 
