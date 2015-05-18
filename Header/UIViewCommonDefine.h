@@ -38,10 +38,12 @@ fprintf(stderr, "<%s, %d> %s \n", [[[NSString stringWithUTF8String:__FILE__] las
 fprintf(stderr, "-----------\n");   \
 } while(0)
 
+#define _NSLOG NSLOG(nil)
 #else
 
 #define NSLOG(format, ...)
 
+#define _NSLOG
 #endif
 
 #endif

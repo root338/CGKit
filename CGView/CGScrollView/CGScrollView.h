@@ -10,4 +10,9 @@
 
 @interface CGScrollView : UIScrollView
 
+/**
+ *  初始化相关参数时调用
+ */
+- (void)initializationVariable;
+
 @end
