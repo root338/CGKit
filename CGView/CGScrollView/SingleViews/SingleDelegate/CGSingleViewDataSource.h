@@ -49,7 +49,7 @@
 
 /**
  *  单选视图设置标题的颜色，
- *  与singleView:controlTitleAtIndex:方法结合使用
+ *  与singleView:controlTitleAtIndex:方法结合使用，否则无效
  *
  *  @param singleView  单选视图
  *  @param normalColor 默认颜色
