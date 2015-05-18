@@ -12,23 +12,26 @@
 #import "UIView+Frame.h"
 #import "CGScrollView.h"
 #import "UIViewCommonDefine.h"
+#import "NSTimer+TimerSetupState.h"
 
 @interface CGCycleScrollView ()<UIScrollViewDelegate>
 {
     ///当前总的加载数
     NSInteger _totalViews;
     
-    ///当前显示视图的索引
-    NSInteger _currentLoadIndex;
-    
     ///标识约束是否设置完成
     BOOL didSetupConstraints;
+    
+    ///计时器
+    NSTimer *_autoScrollTimer;
 }
 
 @property (nonatomic, readonly) NSInteger currentLoadViewsNumber;
 
 @property (nonatomic, strong) CGScrollView *cycleScrollView;
 
+///当前显示视图的索引
+@property (nonatomic, assign) NSInteger currentLoadIndex;
 @end
 
 @implementation CGCycleScrollView
@@ -52,13 +55,13 @@
 - (void)initializationVariable
 {
 //    self.isCycle = YES;
-    _currentLoadIndex = 0;
+    self.isAutoScrollView = NO;
+    self.currentLoadIndex = 0;
     self.cycleScrollView.showsVerticalScrollIndicator = NO;
     self.cycleScrollView.showsHorizontalScrollIndicator = NO;
     self.cycleScrollView.scrollsToTop = NO;
     self.cycleScrollView.pagingEnabled = YES;
     self.cycleScrollView.delegate = self;
-    
 }
 
 #pragma mark - 对相关属性进行赋值
@@ -85,6 +88,79 @@
 {
     return 3;
 }
+
+- (void)setIsAutoScrollView:(BOOL)isAutoScrollView
+{
+    if (self.delayTimeInterval == 0) {
+        self.delayTimeInterval = 2;
+    }
+    
+    if (_isAutoScrollView != isAutoScrollView) {
+        
+        _isAutoScrollView = isAutoScrollView;
+        if (_isAutoScrollView && _autoScrollTimer == nil) {
+            [self performSelector:@selector(startTimer) withObject:nil afterDelay:self.delayTimeInterval];
+        }
+    }
+}
+
+- (void)setDelayTimeInterval:(NSTimeInterval)delayTimeInterval
+{
+    if (_delayTimeInterval != delayTimeInterval) {
+        _delayTimeInterval = delayTimeInterval;
+        if (self.isAutoScrollView) {
+            //当自动滑动打开时，每隔多少秒数值改变时，更新计时器
+            [self updateTimer];
+        }
+    }
+}
+
+#pragma mark - 计时器操作
+- (NSTimer *)autoScrollTimer
+{
+    
+    if (_autoScrollTimer) {
+        return _autoScrollTimer;
+    }
+    _autoScrollTimer = [NSTimer scheduledTimerWithTimeInterval:self.delayTimeInterval target:self selector:@selector(reloadNextPageView:) userInfo:nil repeats:YES];
+    
+    return _autoScrollTimer;
+}
+
+- (void)startTimer
+{
+    [[self autoScrollTimer] startTimer];
+}
+
+- (void)stopTimer
+{
+    if (_autoScrollTimer) {
+        [_autoScrollTimer stopTimer];
+        _autoScrollTimer = nil;
+    }
+}
+
+- (void)pauseTimer
+{
+    [[self autoScrollTimer] pauseTimer];
+}
+
+- (void)startTimerAfterDelayTimeInterval
+{
+    [[self autoScrollTimer] startTimerAfterTimeInterval:self.delayTimeInterval];
+}
+
+- (void)updateTimer
+{
+    [self stopTimer];
+    [self startTimer];
+}
+
+- (void)reloadNextPageView:(NSTimer *)timer
+{
+    [self.cycleScrollView setContentOffset:CGPointMake(self.width * 2, self.cycleScrollView.contentOffset.y)
+                                  animated:YES];
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -107,12 +183,12 @@
 ///设置当前需要加载视图的索引列表
 - (NSArray *)setupCurrentLoadViewIndex
 {
-    NSInteger currentViewIndex  = _currentLoadIndex;
+    NSInteger currentViewIndex  = self.currentLoadIndex;
     NSInteger nextViewIndex     = 0;
     NSInteger previousViewIndex = 0;
         
     nextViewIndex = [self calculatePageValue:currentViewIndex + 1];
-    currentViewIndex = _currentLoadIndex;
+    currentViewIndex = self.currentLoadIndex;
     previousViewIndex = [self calculatePageValue:currentViewIndex - 1];
     
     return @[@(previousViewIndex), @(currentViewIndex), @(nextViewIndex)];
@@ -164,11 +240,27 @@
 }
 
 #pragma mark -
+- (BOOL)judgeIsAllReload:(NSInteger)paramIndex isNextPage:(BOOL)isNextPage
+{
+    if (!self.isCycle) {
+        
+        if ((isNextPage && (paramIndex + self.currentLoadViewsNumber == _totalViews)) || (!isNextPage && paramIndex == 0)) {
+            
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (BOOL)judgeIsCurrentLoadIndexReloadIsNextPage:(BOOL)isNextPage
+{
+    return [self judgeIsAllReload:self.currentLoadIndex isNextPage:isNextPage];
+}
 
 ///刷新视图，是否向下翻
 - (void)reloadAllViewForIsNextPage:(BOOL)isNextPage
 {
-    _currentLoadIndex = [self calculatePageValue:_currentLoadIndex + (isNextPage ? 1 : -1)];
+    self.currentLoadIndex = [self calculatePageValue:self.currentLoadIndex + (isNextPage ? 1 : -1)];
     [self reloadAllView];
 }
 
@@ -193,5 +285,16 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self.cycleScrollView setContentOffset:CGPointMake(self.cycleScrollView.width, self.cycleScrollView.contentOffset.y) animated:YES];
+    [self startTimerAfterDelayTimeInterval];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self pauseTimer];
+}
+
+- (void)dealloc
+{
+    
 }
 @end
