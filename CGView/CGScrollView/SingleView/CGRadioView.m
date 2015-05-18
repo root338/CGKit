@@ -64,9 +64,9 @@
         
         [_selectControl setSelected:YES];
         
-        if ([self.delegate respondsToSelector:@selector(radioView:selectedControl:)]) {
+        if ([self.delegate respondsToSelector:@selector(radioView:selectedAtIndex:)]) {
             
-            [self.delegate radioView:self selectedControl:_selectControl];
+            [self.delegate radioView:self selectedAtIndex:[self indexAtControl:_selectControl]];
         }
         
         if (self.didSelectedCallback) {
@@ -95,12 +95,42 @@
 - (void)handleControlEventAction:(id)sender
 {
     BOOL isShouldSelectedControl = YES;
-    if ([self.delegate respondsToSelector:@selector(radioView:shouldSelectedControl:)]) {
-        isShouldSelectedControl = [self.delegate radioView:self shouldSelectedControl:sender];
+    if ([self.delegate respondsToSelector:@selector(radioView:shouldSelectedIndex:)]) {
+        isShouldSelectedControl = [self.delegate radioView:self shouldSelectedIndex:[self indexAtControl:sender]];
     }
     
     if (isShouldSelectedControl) {
         self.selectControl = sender;
     }
+}
+
+- (UIControl *)controlAtIndex:(NSInteger)paramIndex
+{
+    UIControl *control = nil;
+    for (UIView *view in self.subviews) {
+        if (view.tag == paramIndex) {
+            control = (id)view;
+            break;
+        }
+    }
+    
+    return control;
+}
+
+- (UIControl *)controlAtPoint:(CGPoint)point
+{
+    UIView *control = nil;
+    for (UIView *view in self.subviews) {
+        if (CGRectContainsPoint(view.frame, point)) {
+            control = view;
+            break;
+        }
+    }
+    return (id)control;
+}
+
+- (NSInteger)indexAtControl:(UIControl *)paramControl
+{
+    return paramControl.tag;
 }
 @end

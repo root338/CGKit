@@ -14,6 +14,7 @@
 #import "UIView+Frame.h"
 #import "CGSingleSliderView.h"
 #import "UIControl+CalculateArea.h"
+#import "CGSingleBaseContentView.h"
 
 @interface CGSingleControlView ()
 {
@@ -42,6 +43,11 @@
 
 ///查看当前视图按钮是否有选择控件
 //@property (nonatomic, readonly) BOOL selectControlState;
+
+/**
+ 选择控件主视图
+ */
+@property (readonly, nonatomic) CGSingleContentView* contentView;
 @end
 
 @implementation CGSingleControlView
@@ -56,16 +62,6 @@
 }
 
 #pragma mark - setting property
-- (void)setDefaultSelectedIndex:(NSInteger)defaultSelectedIndex
-{
-    [self contentView].defaultSelectedIndex = defaultSelectedIndex;
-}
-
-- (NSInteger)defaultSelectedIndex
-{
-    return [self contentView].defaultSelectedIndex;
-}
-
 - (CGSingleContentView *)contentView
 {
     if (_contentView) {
@@ -105,6 +101,39 @@
 {
     return self.contentView.titleArray;
 }
+
+#pragma mark - 选择标题外观设置
+- (UIColor *)normalColorControlTitle
+{
+    return self.contentView.normalTitleColor;
+}
+
+- (void)setNormalColorControlTitle:(UIColor *)normalColorControlTitle
+{
+    [self contentView].normalTitleColor = normalColorControlTitle;
+}
+
+- (UIColor *)selectedColorControlTitle
+{
+    return self.contentView.selectedTitleColor;
+}
+
+- (void)setSelectedColorControlTitle:(UIColor *)selectedColorControlTitle
+{
+    self.contentView.selectedTitleColor = selectedColorControlTitle;
+}
+
+- (void)setDefaultSelectedIndex:(NSInteger)defaultSelectedIndex
+{
+    [self contentView].defaultSelectedIndex = defaultSelectedIndex;
+}
+
+- (NSInteger)defaultSelectedIndex
+{
+    return [self contentView].defaultSelectedIndex;
+}
+
+#pragma mark -
 
 ///设置选择回调
 - (void)setupCallback
@@ -209,9 +238,20 @@
     }
 }
 
+- (void)sendSelectedEvent:(UIControl *)selectedControl
+{
+    if ([self.delegate respondsToSelector:@selector(singleControl:selectedAtIndex:)]) {
+        
+        [self.delegate singleControl:self selectedAtIndex:[self.contentView.contentView indexAtControl:selectedControl]];
+    }
+}
+
 ///设置滑块的位置
 - (void)setupSliderLocation:(UIControl *)selectedControl
 {
+    //选择时回调
+    [self sendSelectedEvent:selectedControl];
+    
     //判断是否与按钮标题宽度相等
     //注意：这里按钮宽度是等宽的，自定义的宽度是恒定的（暂定，如果动态也不在这设置），所以这两者不用在选择控件变化时改变滑块宽度
     BOOL isSetupSliderWidth = (self.sliderView.sliderWidthType == CGSliderWidthTypeEqualTitleWidth);
@@ -256,3 +296,4 @@
     [super updateConstraints];
 }
 @end
+

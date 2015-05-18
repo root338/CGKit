@@ -11,6 +11,14 @@
 @class CGSingleScrollView;
 @class CGRadioBaseView;
 
+/*
+----------------
+    一些说明:
+ 
+        获取选中按钮的回调可以实现 singleView属性的 delegate 属性协议，它是 CGRadioViewDelegate 协议属性
+----------------
+*/
+
 /**
  *  横向滑动选择视图
  *  功能： 可以横向滑动视图，当是选择视图时可以执行单选

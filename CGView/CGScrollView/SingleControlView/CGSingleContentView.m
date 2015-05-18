@@ -44,11 +44,6 @@
     return _selectedTitleColor;
 }
 
-- (CGRadioView *)radioView
-{
-    return [self contentView];
-}
-
 - (void)setDefaultSelectedIndex:(NSInteger)defaultSelectedIndex
 {
     [[self contentView] initializationSelectedIndex:defaultSelectedIndex];
@@ -112,12 +107,12 @@
 }
 
 #pragma mark - CGRadioViewDelegate
-- (void)radioView:(CGRadioView *)radioView selectedControl:(UIControl *)selectedControl
+- (void)radioView:(CGRadioView *)radioView selectedAtIndex:(NSInteger)selectedIndex
 {
     if (self.selectCallback) {
         
 //        NSAssert([selectedControl isKindOfClass:[UIButton class]], @"必须是UIButton的子类");
-        self.selectCallback((id)selectedControl);
+        self.selectCallback((id)[self.contentView controlAtIndex:selectedIndex]);
     }
 }
 

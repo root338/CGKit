@@ -18,7 +18,7 @@
  *  @param radioView       操作的主视图
  *  @param selectedControl 选择的控件
  */
-- (void)radioView:(CGRadioView *)radioView selectedControl:(UIControl *)selectedControl;
+- (void)radioView:(CGRadioView *)radioView selectedAtIndex:(NSInteger)selectedIndex;
 
 /**
  *  返回所选择的控件是否应该被选
@@ -28,7 +28,7 @@
  *
  *  @return 返回一个BOOL值，表示是否应该被选
  */
-- (BOOL)radioView:(CGRadioView *)radioView shouldSelectedControl:(UIControl *)selectedControl;
+- (BOOL)radioView:(CGRadioView *)radioView shouldSelectedIndex:(NSInteger)selectedIndex;
 
 @end
 
@@ -70,4 +70,31 @@
  *  @param selected      所选的索引
  */
 - (void)initializationSelectedIndex:(NSInteger)selected;
+
+/**
+ *  根据索引返回选择控件的对象
+ *
+ *  @param paramIndex 索引
+ *
+ *  @return 对应选择视图
+ */
+- (UIControl *)controlAtIndex:(NSInteger)paramIndex;
+
+/**
+ *  根据相对于单选视图的坐标获取对应选择控件
+ *
+ *  @param point 相对于单选视图的坐标
+ *
+ *  @return 对应选择视图
+ */
+- (UIControl *)controlAtPoint:(CGPoint)point;
+
+/**
+ *  根据传入选择控件获得对应索引
+ *
+ *  @param paramControl 选择控件
+ *
+ *  @return 对应索引
+ */
+- (NSInteger)indexAtControl:(UIControl *)paramControl;
 @end

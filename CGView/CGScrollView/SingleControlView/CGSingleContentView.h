@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class CGRadioView;
+@class CGSingleBaseContentView;
 
 /**
  *  加载需要显示的单选视图中的各按钮数据
@@ -41,4 +41,6 @@
  *  选择控件后的回调block
  */
 @property (copy, nonatomic) void(^selectCallback)(UIButton *selectControl);
+
+@property (readonly, nonatomic) CGSingleBaseContentView *contentView;
 @end

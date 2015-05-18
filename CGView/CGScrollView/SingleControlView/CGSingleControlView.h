@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class CGSingleControlView;
-@class CGSomeColorButton;
 @class CGSingleContentView;
 @class CGSingleSliderView;
 
 @protocol CGSingleControlViewDelegate <NSObject>
 
+@optional
 /**
  *  选择控件后的回调
  *  @warning 关于选择回调，还是直接在所需要的视图页面加个KVO的观察
@@ -22,7 +22,7 @@
  *  @param tabScrollView  当前所选的主页面
  *  @param selectedButton 所选择的按钮
  */
-- (void)tabScrollView:(CGSingleControlView *)tabScrollView selectedButton:(CGSomeColorButton *)selectedButton index:(NSInteger)index;
+- (void)singleControl:(CGSingleControlView *)singleControl selectedAtIndex:(NSInteger)selectedIndex;
 
 @end
 
@@ -34,7 +34,7 @@
  */
 @interface CGSingleControlView : UIView
 
-//@property (weak, nonatomic) IBOutlet id<CGSingleControlViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet id<CGSingleControlViewDelegate> delegate;
 
 #pragma mark - 添加数据
 /**
@@ -43,10 +43,7 @@
 @property (nonatomic) NSArray *titles;
 
 #pragma mark - 可设置子视图对象
-/**
- 选择控件主视图
- */
-@property (readonly, nonatomic) CGSingleContentView* contentView;
+
 
 /**
  下方选择指示器-——滑块 
@@ -59,8 +56,31 @@
  */
 @property (readonly, nonatomic) UIControl *selectedControl;
 
+#pragma mark - CGSingleContentView属性设置
+/**
+ -----------------------------
+ ***这样设置属性是为了避免单选视图对象对外暴露而导致设置的复杂性，和或许会破坏默认设置的功能
+ ***
+ ***
+ ***如果想自定义扩展度更高的单选视图可以直接使用CGSingleBaseContentView类
+ ***
+ ***以后想到更好的再优化这里吧 -_-
+ -----------------------------
+ */
+
+
 /**
  默认选择的控件索引
  */
 @property (nonatomic) NSInteger defaultSelectedIndex;
+
+/**
+ 设置按钮默认标题颜色 默认颜色为黑色
+ */
+@property (nonatomic) UIColor *normalColorControlTitle;
+
+/**
+ 设置按钮默认选中颜色 默认颜色为红色
+ */
+@property (nonatomic) UIColor *selectedColorControlTitle;
 @end
