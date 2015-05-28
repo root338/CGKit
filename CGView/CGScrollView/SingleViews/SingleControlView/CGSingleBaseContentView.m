@@ -41,7 +41,6 @@
 
 - (void)reloadAllView
 {
-    
     [super reloadAllView];
     
     //手动刷新页面约束
@@ -60,6 +59,8 @@
                 [self.subviews[0] autoPinEdgesToSuperviewEdgesWithInsets:self.controlEdgeInset];
             }else {
                 [self.subviews autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeHorizontal withFixedSpacing:self.itemMarginSpace insetSpacing:self.spaceMargin matchedSizes:self.matchedSize];
+                [self.subviews autoMatchViewsDimension:ALDimensionHeight];
+                
                 //此处是否需要加上按钮与父视图之间的约束，以后再看
                 [self.subviews[0] autoPinEdgeToSuperviewEdge:ALEdgeTop];
                 [self.subviews[0] autoPinEdgeToSuperviewEdge:ALEdgeBottom];

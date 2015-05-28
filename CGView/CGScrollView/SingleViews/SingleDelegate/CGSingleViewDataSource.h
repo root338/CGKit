@@ -58,7 +58,7 @@
 - (void)singleView:(CGRadioView *)singleView titleAtIndexPath:(NSIndexPath *)indexPath normalColor:(UIColor **)normalColor selectColor:(UIColor **)selectColor;
 
 /**
- 设置视图的宽度，
+ 设置视图的宽度
  */
 - (CGFloat)singleView:(CGRadioView *)tabScrollView widthForIndexPath:(NSIndexPath *)indexPath;
 
@@ -71,5 +71,5 @@
 // *
 // *  @return 返回设置的索引
 // */
-//- (CGFloat)tabScrollView:(CGSingleScrollView *)tabScrollView spaceForIndex:(NSInteger)index;
+//- (CGFloat)singleView:(CGSingleScrollView *)singleView spaceForIndex:(NSInteger)index;
 @end

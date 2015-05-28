@@ -8,19 +8,21 @@
 
 #import "CGSingleScrollView.h"
 
+#import "CGSingleSliderView.h"
 #import "PureLayout.h"
 #import "CGRadioBaseView.h"
 #import "UIView+Frame.h"
 
 @interface CGSingleScrollView ()
 {
-    
     BOOL didSetupConstraints;
     
     ///加载的视图总数
     NSInteger _totalCount;
     
 //    CGSize totalContentSize;
+    
+    CGSingleSliderView *_sliderView;
 }
 
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -34,6 +36,8 @@
 
 @implementation CGSingleScrollView
 
+@dynamic delegate;
+@dynamic dataSource;
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -45,7 +49,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        self.showSliderView = YES;
     }
     return self;
 }
@@ -93,6 +97,26 @@
     
     [self addSubview:_scrollView];
     return _scrollView;
+}
+
+- (void)setDelegate:(id<CGRadioViewDelegate>)delegate
+{
+    self.contentView.delegate = delegate;
+}
+
+- (id<CGRadioViewDelegate>)delegate
+{
+    return self.contentView.delegate;
+}
+
+- (void)setDataSource:(id<CGSingleViewDataSource>)dataSource
+{
+    self.contentView.dataSource = dataSource;
+}
+
+- (id<CGSingleViewDataSource>)dataSource
+{
+    return self.contentView.dataSource;
 }
 
 #pragma mark - update data
@@ -160,6 +184,8 @@
     }
     
     [self.scrollView scrollRectToVisible:afterVisibleRect animated:YES];
+    
+    
 }
 
 /**

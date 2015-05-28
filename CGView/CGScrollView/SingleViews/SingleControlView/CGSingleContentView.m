@@ -15,11 +15,15 @@
 {
     BOOL didSetupConstraints;
     
-    CGSingleBaseContentView *_contentView;
+//    CGSingleBaseContentView *_contentView;
 }
+
+@property (strong, nonatomic) CGSingleBaseContentView *contentView;
 @end
 
 @implementation CGSingleContentView
+
+@dynamic dataSource;
 
 #pragma mark - create (init) 
 
@@ -77,6 +81,16 @@
     [self contentView].dataSource = self;
 }
 
+- (void)setDataSource:(id<CGSingleViewDataSource>)dataSource
+{
+    self.contentView.dataSource = dataSource;
+}
+
+- (id<CGSingleViewDataSource>)dataSource
+{
+    return self.contentView.dataSource;
+}
+
 #pragma mark - update layout
 - (void)updateConstraints
 {
@@ -116,4 +130,8 @@
     }
 }
 
+- (NSInteger)indexAtSelected:(UIControl *)selectedControl
+{
+    return [_contentView indexAtControl:selectedControl];
+}
 @end
