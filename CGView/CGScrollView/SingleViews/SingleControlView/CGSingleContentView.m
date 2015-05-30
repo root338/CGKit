@@ -21,6 +21,8 @@
 
 @implementation CGSingleContentView
 
+@dynamic defaultSelectedIndex;
+
 #pragma mark - create (init) 
 
 #pragma mark - setup property
