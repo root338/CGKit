@@ -12,7 +12,7 @@
 
 @interface CGSingleSubControl ()
 {
-    BOOL didSetupConstraints;
+//    BOOL didSetupConstraints;
 }
 @end
 @implementation CGSingleSubControl
@@ -22,7 +22,6 @@
     _contentView = contentView;
     
     [self addSubview:contentView];
-    
     _contentView.autoresizingMask = UIViewAutoresizingFlexibleEdgeMargin;
 }
 
@@ -34,6 +33,7 @@
 }
 //- (void)updateConstraints
 //{
+//    
 //    if (didSetupConstraints) {
 //        
 //        [_contentView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];

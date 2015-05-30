@@ -41,6 +41,7 @@
 
 - (void)reloadAllView
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reloadAllView) object:nil];
     //清除子视图
     [self clearContentView];
     
@@ -86,12 +87,8 @@
         UIView *subView = [self.dataSource singleView:self controlAtIndex:indexPath];
         
         CGSingleSubControl *ctl = [[CGSingleSubControl alloc] init];
-        if (self.isAutoLaout) {
-            
-            ctl.translatesAutoresizingMaskIntoConstraints = NO;
-        }else {
-            
-        }
+        
+        ctl.translatesAutoresizingMaskIntoConstraints = self.isAutoLaout;
         
         ctl.contentView = subView;
         

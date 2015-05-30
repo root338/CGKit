@@ -10,13 +10,18 @@
 
 @class CGSingleBaseContentView;
 
+@protocol CGSingleViewDataSource;
+
 /**
  *  加载需要显示的单选视图中的各按钮数据
  */
 @interface CGSingleContentView : UIView
 
+@property (nonatomic) id<CGSingleViewDataSource> dataSource;
+
 /**
  *  需要加载的标题列表
+ *  @warning 当设置dataSource时设置titles没有效果
  */
 @property (strong, nonatomic) NSMutableArray *titleArray;
 
@@ -42,5 +47,15 @@
  */
 @property (copy, nonatomic) void(^selectCallback)(UIButton *selectControl);
 
-@property (readonly, nonatomic) CGSingleBaseContentView *contentView;
+//不可以将单选视图变为公有属性，会破坏数据实现
+//@property (readonly, nonatomic) CGSingleBaseContentView *contentView;
+
+/**
+ *  获取选择控件的索引
+ *
+ *  @param selectedControl 选择控件
+ *
+ *  @return 返回相应索引
+ */
+- (NSInteger)indexAtSelected:(UIControl *)selectedControl;
 @end

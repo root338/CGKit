@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CGSingleSubControl : UIControl
+@interface CGSingleSubControl : UIButton
 
 @property (strong, nonatomic) UIView *contentView;
 

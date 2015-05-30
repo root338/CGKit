@@ -52,6 +52,8 @@
 
 @implementation CGSingleControlView
 
+@dynamic dataSource;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -100,6 +102,16 @@
 - (NSArray *)titles
 {
     return self.contentView.titleArray;
+}
+
+- (void)setDataSource:(id<CGSingleViewDataSource>)dataSource
+{
+    self.contentView.dataSource = dataSource;
+}
+
+- (id<CGSingleViewDataSource>)dataSource
+{
+    return self.contentView.dataSource;
 }
 
 #pragma mark - 选择标题外观设置
@@ -223,8 +235,6 @@
         
 #ifdef DEBUG
         NSAssert1(nil, @"%s 已选控件不能为nil", __func__);
-#else
-        NSLog(@"%s 已选控件不能为nil",__func__);
 #endif
     }
 }
@@ -242,7 +252,7 @@
 {
     if ([self.delegate respondsToSelector:@selector(singleControl:selectedAtIndex:)]) {
         
-        [self.delegate singleControl:self selectedAtIndex:[self.contentView.contentView indexAtControl:selectedControl]];
+        [self.delegate singleControl:self selectedAtIndex:[self.contentView indexAtSelected:selectedControl]];
     }
 }
 

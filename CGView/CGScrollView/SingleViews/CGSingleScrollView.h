@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class CGSingleScrollView;
-@class CGRadioBaseView;
+//@class CGSingleScrollView;
+//@class CGRadioBaseView;
+@class CGSingleSliderView;
+
+@protocol CGRadioViewDelegate;
+@protocol CGSingleViewDataSource;
 
 /*
 ----------------
@@ -23,14 +27,18 @@
  *  横向滑动选择视图
  *  功能： 可以横向滑动视图，当是选择视图时可以执行单选
  *
- *  @warning 1.指定刷新索引没有完成，需要完善。 2.删除功能需要添加 3.执行过程中得动画效果
+ *  @warning 1.指定刷新索引没有完成。 2.删除功能需要添加 3.执行过程中得动画效果
  */
 @interface CGSingleScrollView : UIView
 
 /**
  单选视图
  */
-@property (readonly, nonatomic) CGRadioBaseView *singleView;
+//@property (readonly, nonatomic) CGRadioBaseView *singleView;
+
+@property (nonatomic) id<CGRadioViewDelegate> delegate;
+
+@property (nonatomic) id<CGSingleViewDataSource> dataSource;
 
 /**
  选择的宽度
@@ -42,4 +50,10 @@
  */
 @property (assign, nonatomic) CGFloat itemSpace;
 
+/**
+ 是否显示滑块 默认为YES 即显示
+ */
+@property (assign, nonatomic) BOOL showSliderView;
+
+@property (readonly, nonatomic) CGSingleSliderView *sliderView;
 @end

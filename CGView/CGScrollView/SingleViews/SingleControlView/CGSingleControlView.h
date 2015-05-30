@@ -12,6 +12,8 @@
 @class CGSingleContentView;
 @class CGSingleSliderView;
 
+@protocol CGSingleViewDataSource;
+
 @protocol CGSingleControlViewDelegate <NSObject>
 
 @optional
@@ -36,9 +38,12 @@
 
 @property (weak, nonatomic) IBOutlet id<CGSingleControlViewDelegate> delegate;
 
+@property (nonatomic) id<CGSingleViewDataSource> dataSource;
+
 #pragma mark - 添加数据
 /**
  需要显示的标题
+ @warning 当设置dataSource时设置titles没有效果
  */
 @property (nonatomic) NSArray *titles;
 
