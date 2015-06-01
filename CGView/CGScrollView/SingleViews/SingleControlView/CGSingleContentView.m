@@ -23,6 +23,7 @@
 
 @implementation CGSingleContentView
 
+@dynamic defaultSelectedIndex;
 @dynamic dataSource;
 
 #pragma mark - create (init) 
