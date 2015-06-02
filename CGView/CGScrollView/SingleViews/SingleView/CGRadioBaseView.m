@@ -62,10 +62,10 @@
             control.tag = indexPath.row;
             [self addSubview:control];
             
-            //仅在当前一行下使用，以后扩展到多行时使用 selectIndexPath 属性
-            if (self.selectIndex == indexPath.row || [self.selectControl isEqual:control]) {
-                self.selectControl = control;
-            }
+//            //仅在当前一行下使用，以后扩展到多行时使用 selectIndexPath 属性
+//            if (self.selectIndex == indexPath.row || [self.selectControl isEqual:control]) {
+//                self.selectControl = control;
+//            }
         }
     }
     

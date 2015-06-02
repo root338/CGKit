@@ -79,10 +79,11 @@
 {
     [self.subviews enumerateObjectsUsingBlock:^(UIControl* obj, NSUInteger idx, BOOL *stop) {
         
-        if ([obj tag] == _selectIndex) {
+        if ([self.selectControl isEqual:obj]) {
             self.selectControl = obj;
         }
-        if ([self.selectControl isEqual:obj]) {
+        
+        if ([obj tag] == _selectIndex) {
             self.selectControl = obj;
         }
         
