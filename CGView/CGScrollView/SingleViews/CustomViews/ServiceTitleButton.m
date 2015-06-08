@@ -8,11 +8,12 @@
 
 #import "ServiceTitleButton.h"
 #import "PureLayout.h"
-#import "CommonHeader.h"
+#import "UIViewCommonDefine.h"
 
 @interface ServiceTitleButton ()
 {
     BOOL didSetupConstraints;
+    BOOL didSetupContentViewConstraints;
     
     UIColor *normalColor;
     UIColor *selectedColor;
@@ -131,6 +132,13 @@
 
 - (void)updateConstraints
 {
+    
+    if (!didSetupContentViewConstraints) {
+        
+        [self setupContentView];
+        didSetupContentViewConstraints = YES;
+    }
+    
     if (!didSetupConstraints) {
         
         if (constraintsArray == nil) {
@@ -140,7 +148,7 @@
             [constraintsArray removeAllObjects];
         }
         
-        [self setupContentView];
+        
         if ((self.titleLabel && !self.imageView) || (!self.titleLabel && self.imageView)) {
             UIView *paramView = self.titleLabel ? self.titleLabel : self.imageView;
             

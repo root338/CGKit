@@ -20,4 +20,6 @@
 @property (weak, nonatomic) CGRadioView *radioView;
 
 @property (strong, nonatomic) UIView *contentView;
+
+@property (assign, nonatomic) BOOL  isAutoLayout;
 @end

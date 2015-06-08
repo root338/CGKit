@@ -7,30 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CGRadioViewDelegate.h"
 
 @class CGRadioView;
-@protocol CGRadioViewDelegate <NSObject>
-
-@optional
-/**
- *  选择控件之后的回调
- *
- *  @param radioView       操作的主视图
- *  @param selectedControl 选择的控件
- */
-- (void)radioView:(CGRadioView *)radioView selectedAtIndex:(NSInteger)selectedIndex;
-
-/**
- *  返回所选择的控件是否应该被选
- *
- *  @param radioView       单选视图
- *  @param selectedControl 将要选择的控件
- *
- *  @return 返回一个BOOL值，表示是否应该被选
- */
-- (BOOL)radioView:(CGRadioView *)radioView shouldSelectedIndex:(NSInteger)selectedIndex;
-
-@end
 
 /**
  单选视图

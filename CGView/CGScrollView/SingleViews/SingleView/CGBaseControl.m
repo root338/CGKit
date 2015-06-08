@@ -77,15 +77,23 @@ typedef NS_ENUM(NSInteger, CGTouchStateType) {
     _contentView = contentView;
     
     [self addSubview:contentView];
+    if (self.isAutoLayout) {
+        
+        
+    }else {
+        _contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
+    }
     
-    _contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
-    _contentView.frame = self.bounds;
+    if (!self.isAutoLayout) {
+        _contentView.frame = self.bounds;
+    }
+    
 }
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -102,11 +110,17 @@ typedef NS_ENUM(NSInteger, CGTouchStateType) {
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {
+    
+    return [super pointInside:point withEvent:event];
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
     if ([self.radioView.delegate respondsToSelector:@selector(radioView:shouldHighlightAtIndex:)]) {
         _isShouldIsHighlight = [self.radioView.delegate radioView:self.radioView shouldHighlightAtIndex:[self.radioView indexAtControl:self]];
     }
-    [self point:point stateType:CGTouchStateTypePointInside];
-    return [super pointInside:point withEvent:event];
+    [self touches:touches stateType:CGTouchStateTypeBegin];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -136,15 +150,12 @@ typedef NS_ENUM(NSInteger, CGTouchStateType) {
 - (BOOL)point:(CGPoint)point stateType:(CGTouchStateType)type
 {
     BOOL isResult = NO;
+    BOOL isAreaContain = NO;
     if (CGRectContainsPoint(self.bounds, point)) {
         
         isResult = YES;
         
-        //点击区域在视图内部
-        if (type == CGTouchStateTypeEnded) {
-            
-            [self sendActionsForControlEvents:UIControlEventTouchUpInside];
-        }
+        isAreaContain = YES;
         
     }else {
         
@@ -156,6 +167,15 @@ typedef NS_ENUM(NSInteger, CGTouchStateType) {
     }
     
     self.highlighted = _isShouldIsHighlight ? isResult : NO;
+    
+    if (isAreaContain) {
+        //点击区域在视图内部
+        if (type == CGTouchStateTypeEnded) {
+            
+            [self sendActionsForControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+    
     return isResult;
 }
 @end
