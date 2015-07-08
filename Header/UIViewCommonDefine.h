@@ -27,6 +27,9 @@
 
 #define __KRGB(r,g,b) __KRGBA(r,g,b,1)
 
+#define __KRGBA_16(value, a) [UIColor colorWithRed:((value & 0xFF0000) >> 16)/255. green:((value & 0x00FF00) >> 16)/255.0 blue:((value & 0x0000FF) >> 16)/255.0 alpha:(a)]
+
+#define __KRGB_16(value) __KRGBA_16(value, 1)
 
 
 #ifdef DEBUG
